@@ -1,7 +1,6 @@
 <ul class="links-menu">
     {% for item in links %}
-    <li><a href="{% url item.href %}"
-            class="{% if request.resolver_match.url_name == item.href %}active{%endif%}">{{item.cat_name}}</a>
+    <li><a href="#">{{item.title}}</a>
     </li>
     {% endfor %}
 </ul>

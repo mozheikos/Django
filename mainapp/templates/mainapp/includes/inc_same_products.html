@@ -2,11 +2,14 @@
 
 {% for item in same_products %}
 <div class="block">
-    <a href="#"><img src="{% static 'img/' %}{{item.image_src}}" alt="{{item.alt}}">
+    <a href="#"><img src="{{ media_url }}{{item.image}}" alt="{{item.short_desc}}">
         <div class="text">
-            <img src="{% static 'img/icon-hover.png' %}" alt="{{item.alt}}">
-            <h4>{{item.name}}</h4>
-            <p>{{item.desc}}</p>
+            <img src="{% static 'img/icon-hover.png' %}" alt="{{item.short_desc}}">
+            <h3>Категория: {{item.category.title}}</h3>
+            <h4>Название: {{item.name}}</h4>
+            <p>Описание: {{item.description}}</p>
+            <p>Цена: {{item.price}}</p>
+            <p>На складе: {{item.count}}</p>
         </div>
     </a>
 </div>

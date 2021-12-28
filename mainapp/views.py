@@ -1,5 +1,8 @@
+from django.conf import settings
 from django.shortcuts import render
 import datetime
+
+from .models import Product, Category
 import json
 
 
@@ -12,17 +15,20 @@ def get_controller_data(file_name):
 def main(request):
     title = 'Главная'
 
-    products = get_controller_data('main_products.json')
-    content = {'title': title, 'products': products}
+    products = Product.objects.all()
+
+    content = {'title': title, 'products': products,
+               "media_url": settings.MEDIA_URL}
     return render(request, 'mainapp/index.html', content)
 
 
 def products(request):
     title = "продукты"
 
-    links = get_controller_data('links.json')
-    same_products = get_controller_data('same_products.json')
-    content = {"title": title, "links": links, "same_products": same_products}
+    links = Category.objects.all()
+    same_products = Product.objects.all()
+    content = {"title": title, "links": links,
+               "same_products": same_products, "media_url": settings.MEDIA_URL}
     return render(request, "mainapp/products.html", content)
 
 
