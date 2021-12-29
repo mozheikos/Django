@@ -18,7 +18,8 @@ def main(request):
 
     products = Product.objects.all()
 
-    content = {"title": title, "products": products, "media_url": settings.MEDIA_URL}
+    content = {"title": title, "products": products,
+               "media_url": settings.MEDIA_URL}
     return render(request, "mainapp/index.html", content)
 
 
@@ -53,5 +54,6 @@ def contact(request):
     contact_cards = get_controller_data("cities.json")
     today = datetime.datetime.now()
 
-    content = {"title": title, "visit_date": today, "contact_cards": contact_cards}
+    content = {"title": title, "visit_date": today,
+               "contact_cards": contact_cards}
     return render(request, "mainapp/contact.html", content)
