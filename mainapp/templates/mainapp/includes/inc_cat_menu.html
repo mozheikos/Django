@@ -1,6 +1,6 @@
 <ul class="links-menu">
     {% for item in links %}
-    <li><a href="#">{{item.title}}</a>
+    <li><a href="{% url 'products:category' item.pk %}">{{item.title}}</a>
     </li>
     {% endfor %}
 </ul>
