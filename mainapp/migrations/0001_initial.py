@@ -7,16 +7,15 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=64, unique=True, verbose_name='Название категории')),
-                ('description', models.TextField(blank=True, verbose_name='описание категории')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("title", models.CharField(max_length=64, unique=True, verbose_name="Название категории")),
+                ("description", models.TextField(blank=True, verbose_name="описание категории")),
             ],
         ),
     ]
