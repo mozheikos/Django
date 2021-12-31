@@ -1,10 +1,9 @@
-import datetime
 import json
-
+from django.utils import timezone
 from django.conf import settings
 from django.shortcuts import render
 
-from .models import Category, Product
+from .models import Category, Contact, Product
 
 
 def get_controller_data(file_name):
@@ -51,8 +50,8 @@ def products(request, category_pk=1, product_pk=None):
 def contact(request):
     title = "о нас"
 
-    contact_cards = get_controller_data("cities.json")
-    today = datetime.datetime.now()
+    contact_cards = Contact.objects.all()
+    today = timezone.now()
 
     content = {"title": title, "visit_date": today,
                "contact_cards": contact_cards}
