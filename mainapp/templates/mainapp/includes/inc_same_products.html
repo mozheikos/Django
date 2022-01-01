@@ -2,8 +2,8 @@
 
 {% for item in same_products %}
 <div class="block">
-    <a href="{% url 'products:product' item.category.pk item.pk %}"><img src="{{ media_url }}{{item.image}}"
-            alt="{{item.short_desc}}">
+    <a href="{% url 'products:product' item.category.pk item.pk %}"><img class="product_img"
+            src="{{ media_url }}{{item.image}}" alt="{{item.short_desc}}">
         <div class="text">
             <img src="{% static 'img/icon-hover.png' %}" alt="{{item.short_desc}}">
             <h3>Категория: {{item.category.title}}</h3>

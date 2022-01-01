@@ -28,7 +28,9 @@ html, body {
 
 .slider {
 	height: 800px;
-	background-image: url(img/slider.jpg); 
+	background-image: url(img/slider.jpg);
+	background-position: center;
+	background-size: contain;
 	padding-left: 98px;
 	padding-right: 211px;
 	position: relative;
@@ -262,13 +264,19 @@ html, body {
 .tab-content {
 	margin-top: 50px;
 	display: flex;
-	justify-content: space-between;
+	justify-content:safe;
 	margin-bottom: 120px;
+	flex-wrap: wrap;
 }
 .tab-content .block {
+	margin: 10px;
 	height: 270px;
 	width: 270px;
 	position: relative;
+}
+.product_img {
+	width: 100%;
+	height: 100%;
 }
 .tab-content a .text {
 	display: none;
@@ -1016,24 +1024,26 @@ td:first-child {
 	padding: 0px 98px;
 }
 .related .title {
-	height: 343px;
+	/*height: 343px;*/
 	margin-right: 0;
 }
 .related .title h2 {
-	margin-top: 245px;
+	margin-top: 45px;
 }
 .related .title .explore {
-	margin-top: 262px;
+	margin-top: 45px;
 }
 .related-products {
+	display: flex;
+	flex-wrap: wrap;
 	margin-bottom: 120px;
 }
 .related-products .block a img {
 	float: left;
 }
 .related-products .block {
-	float: left;
-	margin-right: 30px;
+	/*float: left;*/
+	margin: 10px;
 	display: block;
 	height: 370px;
 	width: 370px;
