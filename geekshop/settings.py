@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "mainapp",
+    "authnapp",
 ]
 
 MIDDLEWARE = [
@@ -104,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Auth model
-#AUTH_USER_MODEL = 'authnapp.ShopUser'
+AUTH_USER_MODEL = 'authnapp.ShopUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
