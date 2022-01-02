@@ -67,7 +67,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-
             ],
         },
     },
@@ -105,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Auth model
-AUTH_USER_MODEL = 'authnapp.ShopUser'
+AUTH_USER_MODEL = "authnapp.ShopUser"
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

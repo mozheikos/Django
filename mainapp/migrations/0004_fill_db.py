@@ -2,17 +2,17 @@ from django.db import migrations
 
 
 def forward(apps, schema_editor):
-    category_model = apps.get_model('mainapp', 'Category')
-    product_model = apps.get_model('mainapp', 'Product')
-    contact_model = apps.get_model('mainapp', 'Contact')
+    category_model = apps.get_model("mainapp", "Category")
+    product_model = apps.get_model("mainapp", "Product")
+    contact_model = apps.get_model("mainapp", "Contact")
 
-    category_object = category_model.objects.create(
-        pk=1, title="все продукты", description="все наши продукты")
+    category_object = category_model.objects.create(pk=1, title="все продукты", description="все наши продукты")
 
     del category_object
 
     category_object = category_model.objects.create(
-        pk=2, title="дом", description="отличная мебель для домашнего интерьера.")
+        pk=2, title="дом", description="отличная мебель для домашнего интерьера."
+    )
 
     product_model.objects.create(
         pk=1,
@@ -22,7 +22,7 @@ def forward(apps, schema_editor):
         short_desc="комфортный стул",
         description="подойдет для просмотра фильмов",
         price="2989.50",
-        count=17
+        count=17,
     )
 
     product_model.objects.create(
@@ -33,7 +33,7 @@ def forward(apps, schema_editor):
         short_desc="очень комфортный стул",
         description="подойдет для общения с друзьями",
         price="3687.2",
-        count=21
+        count=21,
     )
 
     product_model.objects.create(
@@ -44,13 +44,14 @@ def forward(apps, schema_editor):
         short_desc="использованы премиальные материалы",
         description="для тех, кто стремится к лучшему",
         price="8157.99",
-        count=7
+        count=7,
     )
 
     del category_object
 
     category_object = category_model.objects.create(
-        pk=3, title="офис", description="стильная и надежная офисная мебель нового поколения.")
+        pk=3, title="офис", description="стильная и надежная офисная мебель нового поколения."
+    )
 
     product_model.objects.create(
         pk=4,
@@ -60,7 +61,7 @@ def forward(apps, schema_editor):
         short_desc="универсальное решение",
         description="подойдет для любого офиса",
         price="1895.25",
-        count=27
+        count=27,
     )
 
     product_model.objects.create(
@@ -71,13 +72,14 @@ def forward(apps, schema_editor):
         short_desc="улучшенный дизайн",
         description="идеально впишется в строгий интерьер офиса",
         price="3587.41",
-        count=9
+        count=9,
     )
 
     del category_object
 
     category_object = category_model.objects.create(
-        pk=4, title="модерн", description="мебель в стиле МОДЕРН подойдет для любого интерьера.")
+        pk=4, title="модерн", description="мебель в стиле МОДЕРН подойдет для любого интерьера."
+    )
 
     product_model.objects.create(
         pk=6,
@@ -87,7 +89,7 @@ def forward(apps, schema_editor):
         short_desc="инновационный дизайн",
         description="нестандартное решение для современного интерьера",
         price="5361.47",
-        count=18
+        count=18,
     )
 
     product_model.objects.create(
@@ -98,13 +100,14 @@ def forward(apps, schema_editor):
         short_desc="прогрессивный дизайн",
         description="функциональное и комфортное решение",
         price="6789.33",
-        count=12
+        count=12,
     )
 
     del category_object
 
     category_object = category_model.objects.create(
-        pk=5, title="классика", description="классический стиль актуален в любые времена.")
+        pk=5, title="классика", description="классический стиль актуален в любые времена."
+    )
 
     product_model.objects.create(
         pk=8,
@@ -114,7 +117,7 @@ def forward(apps, schema_editor):
         short_desc="классические формы",
         description="окунитесь в европейский комфорт",
         price="4147.51",
-        count=25
+        count=25,
     )
 
     product_model.objects.create(
@@ -125,7 +128,7 @@ def forward(apps, schema_editor):
         short_desc="эргономичная спинка",
         description="почувствуйте комфорт и насладитесь цветовой гаммой",
         price="7147.35",
-        count=18
+        count=18,
     )
 
     product_model.objects.create(
@@ -136,7 +139,7 @@ def forward(apps, schema_editor):
         short_desc="удачные пропорции",
         description="компактность и функциональность",
         price="8357.77",
-        count=8
+        count=8,
     )
 
     contact_model.objects.create(
@@ -144,7 +147,7 @@ def forward(apps, schema_editor):
         city="Москва",
         phone="+7-495-955-95-95",
         mail="moscow_mail@yandex.ru",
-        address="ул. 3-я Строителей, 25, оф. 12"
+        address="ул. 3-я Строителей, 25, оф. 12",
     )
 
     contact_model.objects.create(
@@ -152,7 +155,7 @@ def forward(apps, schema_editor):
         city="Ленинград",
         phone="+7-812-955-95-95",
         mail="leningrad_mail@yandex.ru",
-        address="ул. 3-я Строителей, 25, оф. 12"
+        address="ул. 3-я Строителей, 25, оф. 12",
     )
 
     contact_model.objects.create(
@@ -160,13 +163,13 @@ def forward(apps, schema_editor):
         city="Белгород",
         phone="+7-4722-55-95-95",
         mail="belgorod_mail@yandex.ru",
-        address="ул. 3-я Строителей, 25, оф. 12"
+        address="ул. 3-я Строителей, 25, оф. 12",
     )
 
 
 def reverse(apps, schema_editor):
-    category_model = apps.get_model('mainapp', 'Category')
-    contact_model = apps.get_model('mainapp', 'Contact')
+    category_model = apps.get_model("mainapp", "Category")
+    contact_model = apps.get_model("mainapp", "Contact")
 
     category_model.objects.all().delete()
     contact_model.objects.all().delete()
@@ -174,6 +177,6 @@ def reverse(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-    dependencies = [('mainapp', '0003_contact')]
+    dependencies = [("mainapp", "0003_contact")]
 
     operations = [migrations.RunPython(forward, reverse)]

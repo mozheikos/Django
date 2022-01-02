@@ -8,10 +8,7 @@ class ShopUserAdmin(UserAdmin):
     add_fieldsets = (
         (
             None,
-            {
-                "classes": ("wide",),
-                "fields": ("username", "password1", "password2", "age")
-            },
+            {"classes": ("wide",), "fields": ("username", "password1", "password2", "age")},
         ),
     )
 

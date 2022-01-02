@@ -1,7 +1,8 @@
 import json
-from django.utils import timezone
+
 from django.conf import settings
 from django.shortcuts import render
+from django.utils import timezone
 
 from .models import Category, Contact, Product
 
@@ -17,8 +18,7 @@ def main(request):
 
     products = Product.objects.all()
 
-    content = {"title": title, "products": products,
-               "media_url": settings.MEDIA_URL}
+    content = {"title": title, "products": products, "media_url": settings.MEDIA_URL}
     return render(request, "mainapp/index.html", content)
 
 
@@ -40,7 +40,7 @@ def products(request, category_pk=1, product_pk=None):
         "same_products": same_products,
         "product_large": product_large,
         "media_url": settings.MEDIA_URL,
-        'category': category_pk,
+        "category": category_pk,
     }
     if category_pk:
         print(f"User select category: {category_pk}")
@@ -53,6 +53,5 @@ def contact(request):
     contact_cards = Contact.objects.all()
     today = timezone.now()
 
-    content = {"title": title, "visit_date": today,
-               "contact_cards": contact_cards}
+    content = {"title": title, "visit_date": today, "contact_cards": contact_cards}
     return render(request, "mainapp/contact.html", content)
