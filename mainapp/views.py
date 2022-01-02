@@ -32,7 +32,6 @@ def products(request, category_pk=1, product_pk=None):
         same_products = Product.objects.filter(category_id=category_pk)
     if product_pk:
         product_large = Product.objects.get(pk=product_pk)
-        category_pk = Category.objects.get(id=product_large.category.id)
         same_products = Product.objects.filter(category_id=category_pk)
 
     content = {
@@ -41,6 +40,7 @@ def products(request, category_pk=1, product_pk=None):
         "same_products": same_products,
         "product_large": product_large,
         "media_url": settings.MEDIA_URL,
+        'category': category_pk,
     }
     if category_pk:
         print(f"User select category: {category_pk}")
