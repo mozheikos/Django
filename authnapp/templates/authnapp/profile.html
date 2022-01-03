@@ -1,0 +1,24 @@
+{% extends 'authnapp/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="h2 text-center head">
+    Пользователь: {{user.username}}
+</div>
+<span class="profile_mail">{{user.email}}</span>
+{% csrf_token %}
+<br>
+<div class="profile_fields">
+    <ul>
+        <li class="field"><b>Имя:</b> {{user.first_name}}</li>
+        <li class="field"><b>Фамилия:</b> {{user.last_name}}</li>
+        <li class="field"><b>Возраст:</b> {{user.age}}</li>
+        <li class="field"><b>Аватар:</b> <img src="{{ media_url }}{{user.avatar}}" alt=""></li>
+    </ul>
+</div>
+<a href="{% url 'auth:user_edit' %}" class='edit'>Редакторовать профиль</a>
+<a href="{% url 'main' %}" class='edit'>На главную</a>
+<a href="{% url 'auth:logout' %}" class="edit">Выйти</a>
+{% endblock content %}
