@@ -1,10 +1,10 @@
-import datetime
 import json
 
 from django.conf import settings
 from django.shortcuts import render
+from django.utils import timezone
 
-from .models import Category, Product
+from .models import Category, Contact, Product
 
 
 def get_controller_data(file_name):
@@ -18,8 +18,7 @@ def main(request):
 
     products = Product.objects.all()
 
-    content = {"title": title, "products": products,
-               "media_url": settings.MEDIA_URL}
+    content = {"title": title, "products": products, "media_url": settings.MEDIA_URL}
     return render(request, "mainapp/index.html", content)
 
 
@@ -33,7 +32,6 @@ def products(request, category_pk=1, product_pk=None):
         same_products = Product.objects.filter(category_id=category_pk)
     if product_pk:
         product_large = Product.objects.get(pk=product_pk)
-        category_pk = Category.objects.get(id=product_large.category.id)
         same_products = Product.objects.filter(category_id=category_pk)
 
     content = {
@@ -42,6 +40,7 @@ def products(request, category_pk=1, product_pk=None):
         "same_products": same_products,
         "product_large": product_large,
         "media_url": settings.MEDIA_URL,
+        "category": category_pk,
     }
     if category_pk:
         print(f"User select category: {category_pk}")
@@ -51,9 +50,8 @@ def products(request, category_pk=1, product_pk=None):
 def contact(request):
     title = "о нас"
 
-    contact_cards = get_controller_data("cities.json")
-    today = datetime.datetime.now()
+    contact_cards = Contact.objects.all()
+    today = timezone.now()
 
-    content = {"title": title, "visit_date": today,
-               "contact_cards": contact_cards}
+    content = {"title": title, "visit_date": today, "contact_cards": contact_cards}
     return render(request, "mainapp/contact.html", content)

@@ -28,7 +28,9 @@ html, body {
 
 .slider {
 	height: 800px;
-	background-image: url(img/slider.jpg); 
+	background-image: url(img/slider.jpg);
+	background-position: center;
+	background-size: contain;
 	padding-left: 98px;
 	padding-right: 211px;
 	position: relative;
@@ -262,13 +264,19 @@ html, body {
 .tab-content {
 	margin-top: 50px;
 	display: flex;
-	justify-content: space-between;
+	justify-content:safe;
 	margin-bottom: 120px;
+	flex-wrap: wrap;
 }
 .tab-content .block {
+	margin: 10px;
 	height: 270px;
 	width: 270px;
 	position: relative;
+}
+.product_img {
+	width: 100%;
+	height: 100%;
 }
 .tab-content a .text {
 	display: none;
@@ -1016,24 +1024,26 @@ td:first-child {
 	padding: 0px 98px;
 }
 .related .title {
-	height: 343px;
+	/*height: 343px;*/
 	margin-right: 0;
 }
 .related .title h2 {
-	margin-top: 245px;
+	margin-top: 45px;
 }
 .related .title .explore {
-	margin-top: 262px;
+	margin-top: 45px;
 }
 .related-products {
+	display: flex;
+	flex-wrap: wrap;
 	margin-bottom: 120px;
 }
 .related-products .block a img {
 	float: left;
 }
 .related-products .block {
-	float: left;
-	margin-right: 30px;
+	/*float: left;*/
+	margin: 10px;
 	display: block;
 	height: 370px;
 	width: 370px;
@@ -1073,4 +1083,96 @@ td:first-child {
 }
 .related-products a:hover .text{
 	display: block;
+}
+
+.login {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 25px;
+    overflow: hidden;
+    width: 28em;
+    min-width: 500px;
+    margin: 100px auto;
+    padding: 10px;
+    position: relative;
+    display: block;
+}
+
+.login .head {
+    margin: 15px auto;
+}
+
+.login .form-control[type="submit"] {
+    margin: 10px auto;
+}
+
+.login button {
+    border: 1px solid #eaeaea;
+    margin-bottom: 10px;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+}
+
+.login button.last {
+    margin-bottom: 25px;
+}
+
+.login button a, .login button a:hover {
+    border: 1px solid #eaeaea;
+    color: #555;
+    text-decoration: none;
+}
+
+.login form {
+    margin-bottom: 10px;
+}
+
+.login div.user_avatar {
+    position: fixed;
+    left: 50px;
+    top: 50px;
+}
+
+.user_avatar img {
+    width: 300px;
+    border-radius: 25px;
+}
+
+.profile_mail {
+	display: block;
+	text-align: center;
+}
+
+.field {
+	width: 300px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: auto;
+}
+
+.field:last-child {
+	margin-top: 30px;
+}
+
+.profile_fields {
+	margin: 0 auto;
+}
+
+.edit {
+	display: block;
+	margin: 0 auto 20px;
+	padding: 15px 30px;
+	border-radius: 12px;
+	background-color: rgb(102, 102, 240);
+	color: #fff;
+	text-decoration: none;
+	text-align: center;
+	width: 300px;
+}
+
+.edit:hover {
+	color: #fff;
+	text-decoration: none;
 }
