@@ -1,0 +1,5 @@
+id,password,last_login,is_superuser,username,first_name,last_name,email,is_staff,is_active,date_joined,avatar,age
+1,pbkdf2_sha256$260000$HSL84vWTJeC9239GUuzsjW$O8u/RMHyg1I128zNhJQ6n/iVnegP2LHN67FM0bs7vLg=,2022-01-02 15:25:54.945787,1,admin,Станислав,Можейко,mozheiko.stanislav@yandex.ru,1,1,2021-10-09 10:30:10,users_avatars/default_GbvLjsf.jpg,33
+2,pbkdf2_sha256$260000$2QvCiuuevCL14TbZMFhvgt$6m3CXZz6SEbPYwS7iSnpMihXAq4WYQuPNQFBDsSU0Oo=,2022-01-02 14:00:34.985169,0,test_user,,,,0,1,2022-01-02 12:44:18,,20
+3,pbkdf2_sha256$260000$9eQvMAtKnnF4f0P7rQhLVK$f2qSQjylUAv+LCjifO1N81aic6uPwcW5KWqbCcRF4jQ=,2022-01-02 15:37:45.343849,0,stanislav,Станислав,Можейко,mozheiko.stanislav@yandex.ru,0,1,2022-01-02 15:07:43,users_avatars/users_avatars/default.jpg,34
+4,pbkdf2_sha256$260000$kjXnDJWF8owLOqoMoAaIn9$1Ab0mlcuYVxi6PvKtETRlWAv53UMTjDrPYFYOi60Osk=,2022-01-02 15:55:59.083233,0,sergey123,Станислав,Можейко,mozheiko.stanislav@yandex.ru,0,1,2022-01-02 15:55:08.841238,,20
