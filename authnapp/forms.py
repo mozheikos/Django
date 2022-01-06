@@ -27,13 +27,19 @@ class ShopUserEditForm(UserChangeForm):
     возвращаем путь: каталог + имя файла, если нет - возвращаем None"""
 
     def clean_avatar(self):
-        allowed_types = ['jpg', 'jpeg', 'png', 'svg', 'bmp']
+        allowed_types = ['image/jpg', 'image/jpeg',
+                         'image/png', 'image/svg', 'image/bmp']
+        #ava = self.cleaned_data['avatar']
         ava = self.cleaned_data['avatar']
         if ava:
-            ava = str(ava).rsplit('.', 1)
-            if not ava[1] or ava[1] not in allowed_types:
+            #ava = str(ava).rsplit('.', 1)
+            # if not ava[1] or ava[1] not in allowed_types:
+            if ava.content_type not in allowed_types:
                 raise forms.ValidationError('Не поддерживаемый тип файла')
-        return 'users_avatars/' + '.'.join(ava) if ava else None
+        # return 'users_avatars/' + '.'.join(ava) if ava else None
+        else:
+            ava = 'users_avatars/default.jpg'
+        return ava
 
     class Meta:
         model = ShopUser
