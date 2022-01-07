@@ -85,20 +85,15 @@ elif __name__ == '__main__':
     while True:
         user_choose = input('Выберите действие (1 - выгрузить базу в файлы, 2 - загрузить в базу из файлов,'
                             ' 0 - выход): ')
+        if user_choose == '0':
+            exit(0)
+
+        path_to_db = input(
+            'Введите путь к базе данных (оставьте путсым для использования значения по умолчанию ./db.sqlite3): ')
+        path = path_to_db if path_to_db else DB_PATH
+
         if user_choose == '1':
-            path_to_db = input(
-                'Введите путь к базе данных (оставьте путсым для использования значения по умолчанию ./db.sqlite3): ')
-            path = path_to_db if path_to_db else DB_PATH
             DatabaseConnection(path).dump()
 
         elif user_choose == '2':
-            path_to_db = input(
-                'Введите путь к базе данных (оставьте путсым для использования значения по умолчанию ./db.sqlite3): ')
-            path = path_to_db if path_to_db else DB_PATH
             DatabaseConnection(path).load()
-
-        elif user_choose == '0':
-            exit(0)
-
-        else:
-            print('Неправильный аргумент')
