@@ -12,7 +12,9 @@ urlpatterns = [
     path("products/", include("mainapp.urls", namespace="products")),
     path("contact/", mainapp.contact, name="contact"),
     path("auth/", include("authnapp.urls", namespace="auth")),
+    path("basket/", include("basketapp.urls", namespace="basket")),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

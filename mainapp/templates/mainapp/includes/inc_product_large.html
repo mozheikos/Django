@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="{% if not product_large.pk %}hide{% endif %}">
+<div class="{% if not product_large %}hide{% endif %}">
     <div class="details-products">
         <div class="details-slider">
             <div class="slider-product">
@@ -29,9 +29,20 @@
             <h3 class="big-bold">{{product_large.name}}</h3>
             <h3 class="red">{{product_large.description}}</h3>
             <p class="price"> {{product_large.price}} <span>руб</span></p>
-            <a href="#" class="red-button">
-                заказать <i class="fa fa-chevron-right" aria-hidden="true"></i>
-            </a>
+            <h3 class="red">В наличии: {{product_large.count}}</h3>
+            {% if product_large %}
+            <form class="to_basket_form" method="post" action="{% url 'basket:add' product_large.pk %}"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="#{{ product_large.pk }}" class="label_for_input">Количество:
+                    <input class="quant_input" type="number" name="quant" id="{{ product_large.pk }} " min=1 max=999
+                        value="1">
+                </label>
+                <button class="red-button" type="submit">заказать
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </button>
+            </form>
+            {% endif %}
             <div class="description-text">
                 <p>Расположитесь комфортно.</p>
                 <p>Отличное качество материалов

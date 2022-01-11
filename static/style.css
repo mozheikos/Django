@@ -1176,3 +1176,18 @@ td:first-child {
 	color: #fff;
 	text-decoration: none;
 }
+
+.label_for_input {
+	display: flex;
+	margin-top: 20px;
+	justify-content: space-around;
+	align-items: center;
+	font-size: 32px;
+}
+
+.quant_input {
+	width: 3em;
+	line-height: 36px;
+	font-size: 32px;
+	text-align: center;
+}
