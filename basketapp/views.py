@@ -31,9 +31,9 @@ def add_to_basket(request, pk):
         basket, created = Basket.objects.get_or_create(
             user=request.user, product=product, defaults={"quantity": quantity}
         )
-    if not created:
-        basket.quantity += quantity
-        basket.save()
+        if not created:
+            basket.quantity += quantity
+            basket.save()
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
