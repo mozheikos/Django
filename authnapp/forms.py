@@ -27,20 +27,18 @@ class ShopUserEditForm(UserChangeForm):
     возвращаем путь: каталог + имя файла, если нет - возвращаем None"""
 
     def clean_avatar(self):
-        allowed_types = ['image/jpg', 'image/jpeg',
-                         'image/png', 'image/svg', 'image/bmp']
-        ava = self.cleaned_data['avatar']
+        allowed_types = ["image/jpg", "image/jpeg", "image/png", "image/svg", "image/bmp"]
+        ava = self.cleaned_data["avatar"]
         if ava:
             if ava.content_type not in allowed_types:
-                raise forms.ValidationError('Не поддерживаемый тип файла')
+                raise forms.ValidationError("Не поддерживаемый тип файла")
         else:
-            ava = 'users_avatars/default.jpg'
+            ava = "users_avatars/default.jpg"
         return ava
 
     class Meta:
         model = ShopUser
-        fields = ("username", "first_name",
-                  "last_name", "email", "age", "avatar")
+        fields = ("username", "first_name", "last_name", "email", "age", "avatar")
 
 
 class ShopUserRegisterForm(UserCreationForm):

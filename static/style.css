@@ -1191,3 +1191,71 @@ td:first-child {
 	font-size: 32px;
 	text-align: center;
 }
+
+.basket_view {
+	list-style: none;
+	max-width: 768px;
+	margin: 0 auto;
+	font-size: 18px;
+}
+
+.basket_header {
+	display: flex;
+	flex-direction: row;
+	list-style: none;
+	border-bottom: 1px solid #000;
+	font-weight: bold;
+}
+
+.basket_item {
+	display: flex;
+}
+
+.basket_total {
+	border-top: 1px solid #000;
+	display: flex;
+	justify-content: space-between;
+}
+
+.row {
+	font-size: 18px;
+	line-height: 2em;
+}
+
+.row_name {
+	width: 25%;
+}
+
+.row_price {
+	width: 15%;
+}
+
+.row_quantity {
+	width: 20%;
+}
+
+.row_cost {
+	width: 20%;
+}
+
+.basket_delete {
+	margin: auto;
+	padding: 4px 12px;
+	font-size: 12px;
+	display: inline-block;
+	text-decoration: none;
+	border-radius: 12px;
+	color: rgb(255, 255, 255);
+	background-color: cornflowerblue;
+}
+
+.count {
+	margin: 0 10px;
+}
+
+.basket_empty {
+	font-weight: 400;
+	font-size: 36px;
+	width: 50%;
+	margin: 0 auto;
+}

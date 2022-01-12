@@ -1,0 +1,38 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block menu %}
+<div class="hero-white">
+    <div class="header clearfix">
+        {% include 'mainapp/includes/inc_menu.html' %}
+    </div>
+</div>
+{% endblock menu %}
+
+{% block content %}
+{% if basket_items %}
+<ul class="basket_view">
+    <li class="basket_header">
+        <p class="row row_name">Название товара</p>
+        <p class="row row_price">Цена, руб.</p>
+        <p class="row row_quantity">Количество</p>
+        <p class="row row_cost">Стоимость</p>
+    </li>
+    {% for item in basket_items %}
+    <li class="basket_item">
+        <p class="row row_name">{{ item.product.name }}</p>
+        <p class="row row_price">{{ item.product.price }}</p>
+        <p class="row row_quantity">{{ item.quantity }} шт.</p>
+        <p class="row row_cost">{{ item.product_cost }} руб.</p>
+        <a href="{% url 'basket:remove' item.pk %}" class="basket_delete">Удалить</a>
+    </li>
+    {% endfor %}
+    <li class="basket_total">
+        <p class="row total"><b>Итого:</b> {{ basket_count }} товаров</p>
+        <p class="row total_cost"><b>Сумма:</b> {{ basket_cost }} рублей</p>
+    </li>
+</ul>
+{% else %} <p class="basket_empty">Корзина пуста</p>
+{% endif %}
+<div class="clr"></div>
+{% endblock content %}
