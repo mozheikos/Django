@@ -21,10 +21,6 @@ def basket(request):
     }
     return render(request, "basketapp/basket.html", content)
 
-    # content = {}
-    # return render(request, "basketapp/basket.html", content)
-    # return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
 
 def add_to_basket(request, pk):
     product = get_object_or_404(Product, pk=pk)

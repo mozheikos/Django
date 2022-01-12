@@ -28,11 +28,14 @@
     </li>
     {% endfor %}
     <li class="basket_total">
-        <p class="row total"><b>Итого:</b> {{ basket_count }} товаров</p>
+        <p class="row total"><b>Итого:</b> {{ basket_count }} шт</p>
         <p class="row total_cost"><b>Сумма:</b> {{ basket_cost }} рублей</p>
     </li>
 </ul>
-{% else %} <p class="basket_empty">Корзина пуста</p>
+{% else %}
+<div class="basket_view">
+    <p class="basket_empty">Корзина пуста</p>
+</div>
 {% endif %}
 <div class="clr"></div>
 {% endblock content %}

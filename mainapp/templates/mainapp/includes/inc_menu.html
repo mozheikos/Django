@@ -18,8 +18,15 @@
                 <a href="{% url 'auth:login' %}">войти</a>
                 {% endif %}
         </li>
-        <li class="count"><b>В корзине:</b> {{ basket_count }} товаров</li>
-        <li class="count"><b>На сумму:</b> {{ basket_cost }} рублей</li>
+        <li class="count">
+                <div class="menu_basket_container">
+                        <span class="menu_basket"><b class="menu_basket_title">В корзине:</b> {{ basket_count }}
+                                товаров</span>
+                        <span class="menu_basket"><b class="menu_basket_title">На сумму:</b> {{ basket_cost }}
+                                рублей</span>
+                </div>
+        </li>
+
 </ul>
 <a href="{% url 'basket:view' %}" class="basket"></a>
 <a href="#" class="search"></a>
