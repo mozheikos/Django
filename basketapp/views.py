@@ -7,17 +7,19 @@ from mainapp.models import Product
 
 def basket(request):
     title = f"Корзина пользователя: {request.user.username}"
-    basket_items = Basket.objects.filter(user=request.user)
-    basket_count = Basket.product_count(request.user)
-    basket_cost = Basket.total_cost(request.user)
-    row = 0
+    basket_items = []
+    basket_count = []
+    basket_cost = []
+    if request.user.is_authenticated:
+        basket_items = Basket.objects.filter(user=request.user)
+        basket_count = Basket.product_count(request.user)
+        basket_cost = Basket.total_cost(request.user)
     content = {
         "title": title,
         "basket_items": basket_items,
         "basket_count": basket_count,
         "basket_cost": basket_cost,
         "media_url": settings.MEDIA_URL,
-        "row": row,
     }
     return render(request, "basketapp/basket.html", content)
 

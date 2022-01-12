@@ -19,8 +19,11 @@ def main(request):
     title = "Главная"
 
     products = Product.objects.all()
-    basket_count = Basket.product_count(request.user)
-    basket_cost = Basket.total_cost(request.user)
+    basket_count = []
+    basket_cost = []
+    if request.user.is_authenticated:
+        basket_count = Basket.product_count(request.user)
+        basket_cost = Basket.total_cost(request.user)
 
     content = {
         "title": title,
@@ -43,9 +46,11 @@ def products(request, category_pk=1, product_pk=None):
     if product_pk:
         product_large = Product.objects.get(pk=product_pk)
         same_products = Product.objects.filter(category_id=category_pk).exclude(pk=product_pk)
-
-    basket_count = Basket.product_count(request.user)
-    basket_cost = Basket.total_cost(request.user)
+    basket_count = []
+    basket_cost = []
+    if request.user.is_authenticated:
+        basket_count = Basket.product_count(request.user)
+        basket_cost = Basket.total_cost(request.user)
     content = {
         "title": title,
         "links": links,
@@ -64,8 +69,11 @@ def products(request, category_pk=1, product_pk=None):
 def contact(request):
     title = "о нас"
 
-    basket_count = Basket.product_count(request.user)
-    basket_cost = Basket.total_cost(request.user)
+    basket_count = []
+    basket_cost = []
+    if request.user.is_authenticated:
+        basket_count = Basket.product_count(request.user)
+        basket_cost = Basket.total_cost(request.user)
     contact_cards = Contact.objects.all()
     today = timezone.now()
 

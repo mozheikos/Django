@@ -18,6 +18,7 @@
                 <a href="{% url 'auth:login' %}">войти</a>
                 {% endif %}
         </li>
+        {% if user.is_authenticated %}
         <li class="count">
                 <div class="menu_basket_container">
                         <span class="menu_basket"><b class="menu_basket_title">В корзине:</b> {{ basket_count }}
@@ -26,7 +27,7 @@
                                 рублей</span>
                 </div>
         </li>
-
+        {% endif %}
 </ul>
 <a href="{% url 'basket:view' %}" class="basket"></a>
 <a href="#" class="search"></a>
