@@ -45,7 +45,8 @@ def products(request, category_pk=1, product_pk=None):
         same_products = Product.objects.filter(category_id=category_pk)
     if product_pk:
         product_large = Product.objects.get(pk=product_pk)
-        same_products = Product.objects.filter(category_id=category_pk).exclude(pk=product_pk)
+        same_products = Product.objects.filter(
+            category_id=product_large.category_id).exclude(pk=product_pk)
     basket_count = []
     basket_cost = []
     if request.user.is_authenticated:
