@@ -1176,3 +1176,105 @@ td:first-child {
 	color: #fff;
 	text-decoration: none;
 }
+
+.label_for_input {
+	display: flex;
+	margin-top: 20px;
+	justify-content: space-around;
+	align-items: center;
+	font-size: 32px;
+}
+
+.quant_input {
+	width: 3em;
+	line-height: 36px;
+	font-size: 32px;
+	text-align: center;
+}
+
+.basket_view {
+	padding: 30px;
+	list-style: none;
+	max-width: 768px;
+	margin: 20px auto;
+	font-size: 18px;
+	box-shadow: 0 0 35px#474646;
+	box-sizing: border-box;
+	border-radius: 20px;
+}
+
+.basket_header {
+	display: flex;
+	flex-direction: row;
+	list-style: none;
+	border-bottom: 1px solid #000;
+	font-weight: bold;
+}
+
+.basket_item {
+	display: flex;
+}
+
+.basket_total {
+	border-top: 1px solid #000;
+	display: flex;
+	justify-content: space-between;
+}
+
+.row {
+	font-size: 18px;
+	line-height: 2em;
+}
+
+.row_name {
+	width: 25%;
+}
+
+.row_price {
+	width: 15%;
+}
+
+.row_quantity {
+	width: 20%;
+}
+
+.row_cost {
+	width: 20%;
+}
+
+.basket_delete {
+	margin: auto;
+	padding: 6px 12px;
+	line-height: normal;
+	font-size: 12px;
+	text-decoration: none;
+	border-radius: 12px;
+	box-shadow: 0 0 5px#000000;
+	color: rgb(255, 255, 255);
+	background-color: #f44336;
+}
+
+.count {
+	margin: 0 10px;
+}
+
+.basket_empty {
+	font-weight: 400;
+	font-size: 36px;
+	width: 50%;
+	margin: 0 auto;
+}
+
+.menu_basket {
+	color: #f16d64;
+}
+
+.menu_basket_container {
+	display: flex;
+	flex-direction: column;
+}
+
+.menu_basket_title {
+	display: inline-block;
+	width: 100px;
+}
