@@ -913,9 +913,16 @@ td:first-child {
 	margin-right: 30px;
 }
 .slider-product {
+	position: relative;
 	width: 570px;
 	height: 570px;
 }
+.hot {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
 .slider-control {
 	width: 420px;
 	height: 70px;

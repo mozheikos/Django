@@ -5,6 +5,8 @@
         <div class="details-slider">
             <div class="slider-product">
                 <img class="product_img" src="{{media_url}}{{product_large.image}}">
+                <img class="hot {% if not hot %}hide{% endif %}" src="{% static 'img/hot_deal_small.png' %}"
+                    alt="hot_deal">
             </div>
             <div class="slider-control">
                 <div class="block">
@@ -31,7 +33,7 @@
             <p class="price"> {{product_large.price}} <span>руб</span></p>
             <h3 class="red">В наличии: {{product_large.count}}</h3>
             {% if product_large %}
-            <form class="to_basket_form" method="post" action="{% url 'basket:add' product_large.pk %}"
+            <form class="to_basket_form" method="post" action="{% url 'basket:add' category product_large.pk %}"
                 enctype="multipart/form-data">
                 {% csrf_token %}
                 <label for="#{{ product_large.pk }}" class="label_for_input">Количество:

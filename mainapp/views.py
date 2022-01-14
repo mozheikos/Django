@@ -1,4 +1,5 @@
 import json
+from random import randint
 
 from django.conf import settings
 from django.shortcuts import render
@@ -35,23 +36,34 @@ def main(request):
     return render(request, "mainapp/index.html", content)
 
 
-def products(request, category_pk=1, product_pk=None):
+def products(request, product_pk=None, category_pk=0):
     title = "продукты"
     links = Category.objects.all()
+    hot = False
     product_large = None
-    if category_pk == 1:
-        same_products = Product.objects.all()
-    else:
-        same_products = Product.objects.filter(category_id=category_pk)
     if product_pk:
         product_large = Product.objects.get(pk=product_pk)
         same_products = Product.objects.filter(
             category_id=product_large.category_id).exclude(pk=product_pk)
+    else:
+        if not category_pk:
+            product_large = Product.objects.get(
+                pk=randint(1, Product.objects.all().count()))
+            category_pk = product_large.category_id
+            same_products = Product.objects.filter(
+                category_id=product_large.category_id).exclude(pk=product_pk)
+            hot = True
+        elif category_pk == 1:
+            same_products = Product.objects.all()
+        else:
+            same_products = Product.objects.filter(category_id=category_pk)
+
     basket_count = []
     basket_cost = []
     if request.user.is_authenticated:
         basket_count = Basket.product_count(request.user)
         basket_cost = Basket.total_cost(request.user)
+
     content = {
         "title": title,
         "links": links,
@@ -61,6 +73,7 @@ def products(request, category_pk=1, product_pk=None):
         "category": category_pk,
         "basket_count": basket_count,
         "basket_cost": basket_cost,
+        'hot': hot,
     }
     if category_pk:
         print(f"User select category: {category_pk}")
