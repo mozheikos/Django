@@ -43,15 +43,12 @@ def products(request, product_pk=None, category_pk=0):
     product_large = None
     if product_pk:
         product_large = Product.objects.get(pk=product_pk)
-        same_products = Product.objects.filter(
-            category_id=product_large.category_id).exclude(pk=product_pk)
+        same_products = Product.objects.filter(category_id=product_large.category_id).exclude(pk=product_pk)
     else:
         if not category_pk:
-            product_large = Product.objects.get(
-                pk=randint(1, Product.objects.all().count()))
+            product_large = Product.objects.get(pk=randint(1, Product.objects.all().count()))
             category_pk = product_large.category_id
-            same_products = Product.objects.filter(
-                category_id=product_large.category_id).exclude(pk=product_pk)
+            same_products = Product.objects.filter(category_id=product_large.category_id).exclude(pk=product_pk)
             hot = True
         elif category_pk == 1:
             same_products = Product.objects.all()
@@ -73,7 +70,7 @@ def products(request, product_pk=None, category_pk=0):
         "category": category_pk,
         "basket_count": basket_count,
         "basket_cost": basket_cost,
-        'hot': hot,
+        "hot": hot,
     }
     if category_pk:
         print(f"User select category: {category_pk}")

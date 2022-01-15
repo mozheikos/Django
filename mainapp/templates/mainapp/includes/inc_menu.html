@@ -21,9 +21,11 @@
         {% if user.is_authenticated %}
         <li class="count">
                 <div class="menu_basket_container">
-                        <span class="menu_basket"><b class="menu_basket_title">В корзине:</b> {{ basket_count }}
+                        <span class="menu_basket menu_count">
+                                <b class="menu_basket_title">В корзине:</b> {{ basket_count }}
                                 товаров</span>
-                        <span class="menu_basket"><b class="menu_basket_title">На сумму:</b> {{ basket_cost }}
+                        <span class="menu_basket menu_cost">
+                                <b class="menu_basket_title">На сумму:</b> {{ basket_cost }}
                                 рублей</span>
                 </div>
         </li>
