@@ -1,0 +1,41 @@
+{% load static %}
+
+{% if basket_items %}
+<ul class="basket_view">
+    <li class="basket_header">
+        <p class="row row_name">Название товара</p>
+        <p class="row row_price">Цена, руб.</p>
+        <p class="row row_quantity">Количество</p>
+        <p class="row row_cost">Стоимость</p>
+    </li>
+    {% for item in basket_items %}
+    <li class="basket_item">
+        <p class="row row_name">{{ item.product.name }}</p>
+        <p class="row row_price">{{ item.product.price }}</p>
+        <p class="row row_quantity">
+            <input class="value_edit" type="number" name="{{ item.pk }}" min=1 max=999 value="{{ item.quantity }}">
+            <span>шт.</span>
+        </p>
+        <p class="row row_cost">{{ item.product_cost }} руб.</p>
+        <a href="{% url 'basket:remove' item.pk %}" class="basket_delete">Удалить</a>
+    </li>
+    {% endfor %}
+    <li class="basket_total">
+        <p class="row total"><b>Итого:</b> {{ basket_count }} шт</p>
+        <p class="row total_cost"><b>Сумма:</b> {{ basket_cost }} рублей</p>
+    </li>
+    <div class="order">
+        <a href="{% url 'main' %}" class="basket_back">На главную</a>
+        <a href="{{ back }}" class="basket_back">Продолжить покупки</a>
+        <a href="#" class="basket_back">Оформить заказ</a>
+    </div>
+</ul>
+{% else %}
+<div class="basket_view">
+    <p class="basket_empty">Корзина пуста</p>
+    <div class="order">
+        <a href="{% url 'main' %}" class="basket_back">На главную</a>
+    </div>
+</div>
+{% endif %}
+<div class="clr"></div>

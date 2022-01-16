@@ -8,6 +8,9 @@
     Вход в систему
 </div>
 <form class="form-horizontal" action="{% url 'auth:login' %}" method="post">
+    {% if next_page %}
+    <input type="hidden" name="next_page" value="{{ next_page }}">
+    {% endif %}
     {% csrf_token %}
     {{ login_form.as_p }}
     <br>
