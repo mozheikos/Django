@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "mainapp",
     "authnapp",
     "basketapp",
+    "adminapp",
 ]
 
 MIDDLEWARE = [
