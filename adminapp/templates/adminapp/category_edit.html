@@ -1,0 +1,16 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="user_profile_container">
+    <form class="form-horizontal" method="POST" action="{% url 'admin:category_edit' category.pk %}"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <a class="adminapp_button" href="{% url 'admin:category' %}">Назад</a>
+        <input class="adminapp_button" type="submit" value="сохранить">
+    </form>
+</div>
+
+{% endblock content %}

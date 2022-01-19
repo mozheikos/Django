@@ -1314,3 +1314,277 @@ td:first-child {
 	border: 1px solid darkgray;
 	box-shadow: 0 0 3px black;
 }
+
+.admin_menu {
+	margin-top: 50px;
+	display: flex;
+	justify-content: center;
+	list-style: none;
+}
+
+.admin_menu_item {
+	margin: 0 20px;
+}
+
+.admin_menu_item .active {
+	color: #212121;
+	font-weight: 700;
+	border-bottom: 3px solid #212121;
+}
+
+.admin_menu_link {
+	color: #8c8c8c;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: right;
+	text-transform: uppercase;
+	text-decoration: none;
+	padding: 10px 13px;
+}
+
+.admin_menu_link:hover {
+	text-decoration: none;
+	color: #212121;
+	font-weight: 700;
+	border-bottom: 3px solid #212121;
+}
+
+.admin_menu_link:active {
+	color: #8c8c8c;
+	font-weight: 700;
+	border-bottom: 3px solid #212121;
+}
+
+.find_label {
+	display: block;
+	margin: 60px;
+}
+
+.find_user {
+	margin-left: 30px;
+	font-size: 16px;
+}
+
+.find {
+	padding: 0 10px;
+	font-size: 16px;
+	margin-right: 20px;
+}
+
+.create_user {
+	color:#8c8c8c;
+	margin-left: 50px;
+	text-decoration: none;
+}
+
+.create_user:hover {
+	text-decoration: none;
+	color: #212121;
+	font-weight: 700;
+	border-bottom: 3px solid #212121;
+}
+
+.users_header, .user_list {
+	display: flex;
+	list-style: none;
+	width: 1140px;
+	margin: 0 auto;
+	min-height: 120px;
+	border-bottom: 1px solid #000;
+	text-align: center;
+	align-items: center;
+}
+
+.id {
+	width: 10%;
+}
+
+.avatar {
+	width: 120px;
+}
+
+.username {
+	width: 45%;
+}
+
+.is_active {
+	width: 10%;
+}
+
+.is_staff {
+	width: 10%;
+}
+
+.welcome {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	max-width: 1140px;
+	height: 80vh;
+	margin: auto;
+}
+
+.welcome > h1 {
+	display: block;
+	margin-bottom: 50px;
+}
+
+.welcome > a {
+	display: inline-block;
+	border: #474646 1px solid;
+	padding: 10px 26px;
+	background-color: cornflowerblue;
+	border-radius: 5px;
+	color: #FFF;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.admin_user_container {
+	max-width: 768px;
+	margin: 60px auto;
+}
+
+.not_active {
+	background: rgba(33, 33, 33, 0.2);
+	opacity: 0.5;
+}
+
+.delete_user {
+	border: #000 1px solid;
+	padding: 7px 19px;
+	border-radius: 5px;
+	background-color: royalblue;
+	text-decoration: none;
+	color: #FFF;
+	opacity: 1;
+}
+
+.user_profile_container {
+	display: flex;
+	flex-direction: column;
+	max-width: 768px;
+	border-radius: 20px;
+	padding: 40px;
+	box-shadow: 0 0 15px black;
+	box-sizing: border-box;
+	margin: 50px auto;
+}
+
+.user_profile_container > .user_profile_links {
+	display: flex;
+	justify-content: space-between;
+}
+
+.user_profile_container > .user_profile_links > a:active {
+	box-shadow: none;
+}
+
+.user_profile_field {
+	display: flex;
+	padding: 20px;
+	font-size: 16px;
+}
+
+.user_profile_field > .field {
+	font-weight: 700;
+	margin-left: 80px;
+	width: 50%;
+}
+
+.user_profile_field > .value {
+	width: 50%;
+	text-align: center;
+}
+
+.av {
+	height: 120px;
+}
+.av > img {
+	display: block;
+	width: 75%;
+	height: 120px;
+	text-align: center;
+}
+
+.adminapp_button {
+	display: inline-block;
+	text-decoration: none;
+	background-color: royalblue;
+	border-radius: 8px;
+	color: #FFF;
+	padding: 6px 26px;
+	font-size: 16px;
+	margin: 5px auto;
+	box-shadow: 0 0 6px 1px black;
+	text-shadow: 0 0 3px darkblue;
+	border-bottom: 2px solid black;
+	border-right: 2px solid black;
+	cursor: pointer;
+}
+
+.form_field {
+	display: flex;
+	align-items: center;
+	margin: 30px;
+}
+.form_buttons {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+}
+
+.category_list_container {
+	max-width: 1140px;
+	margin: 50px auto;
+	list-style: none;
+}
+
+.category_list {
+	list-style: none;
+	display: flex;
+	font-size: 18px;
+	font-family: sans-serif;
+	text-align: center;
+	align-items: center;
+	border-bottom: 1px solid grey;
+	padding: 10px;
+}
+
+.cat_header {
+	font-weight: 700;
+}
+
+.category_id {
+	width: 10%;
+}
+.category_title {
+	width: 25%;
+}
+
+.category_desc {
+	width: 45%;
+}
+
+.category_actions {
+	display: flex;
+	flex-direction: column;
+	width: 20%;
+}
+.product_id {
+	width: 10%;
+}
+.product_name {
+	width: 40%;
+}
+
+.product_price {
+	width: 15%;
+}
+.product_count {
+	width: 15%;
+}
+.admin_page {
+	margin-right: 80px;
+}

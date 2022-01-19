@@ -1,0 +1,48 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<ul class="category_list_container">
+    <a class="adminapp_button" href="{% url 'admin:category_create' %}">Добавить категорию</a>
+    <li>
+        <ul class="category_list cat_header">
+            <li class="category_id">
+                ID
+            </li>
+            <li class="category_title">
+                Название
+            </li>
+            <li class="category_desc">
+                Описание
+            </li>
+            <li class="category_actions">
+                Действия
+            </li>
+        </ul>
+    </li>
+    {% for category in categorys %}
+    <li>
+        <ul class="category_list cat_row {% if not category.is_active %}not_active{% endif %}">
+            <li class="category_id">
+                {{ category.id }}
+            </li>
+            <li class="category_title">
+                {{ category.title }}
+            </li>
+            <li class="category_desc">
+                {{ category.description }}
+            </li>
+            <li class="category_actions">
+                <a class="adminapp_button" href="{% url 'admin:category_edit' category.pk %}">Редактировать</a>
+                <a class="adminapp_button" href="{% url 'admin:category_view' category.pk %}">Просмотр</a>
+                <a href="" class="adminapp_button del_cat" data-pk="{{category.pk}}">
+                    {% if category.is_active %}Удалить{% else %}Восстановить{% endif %}
+                </a>
+            </li>
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

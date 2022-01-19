@@ -28,12 +28,15 @@ class ShopUserEditForm(UserChangeForm):
 
     def clean_avatar(self):
         allowed_types = ["image/jpg", "image/jpeg", "image/png", "image/svg", "image/bmp"]
-        ava = self.cleaned_data["avatar"]
+        if ["avatar"] in self.changed_data:
+            ava = self.cleaned_data["avatar"]
+        else:
+            ava = None
         if ava:
             if ava.content_type not in allowed_types:
                 raise forms.ValidationError("Не поддерживаемый тип файла")
         else:
-            ava = "users_avatars/default.jpg"
+            ava = self.cleaned_data["avatar"] if self.cleaned_data["avatar"] else "users_avatars/default.jpg"
         return ava
 
     class Meta:
