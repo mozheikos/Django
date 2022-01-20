@@ -28,7 +28,8 @@ def users(request, username=None):
             "users": users,
             "media_url": settings.MEDIA_URL,
         }
-        result = render_to_string("adminapp/includes/inc_users_list.html", content)
+        result = render_to_string(
+            "adminapp/includes/inc_users_list.html", content)
         return JsonResponse({"result": result})
     users = ShopUser.objects.all()
     content = {
@@ -40,6 +41,7 @@ def users(request, username=None):
     return render(request, "adminapp/users.html", content)
 
 
+@user_passes_test(lambda x: x.is_staff)
 def user(request, pk):
     user = ShopUser.objects.get(pk=pk)
     title = f"Пользователь {user.username}"
@@ -52,6 +54,7 @@ def user(request, pk):
     return render(request, "adminapp/user_profile.html", content)
 
 
+@user_passes_test(lambda x: x.is_staff)
 def create_user(request):
     title = "Создание нового пользователя"
     form = ShopUserAdminCreationForm()
@@ -64,12 +67,14 @@ def create_user(request):
     return render(request, "adminapp/create_user.html", content)
 
 
+@user_passes_test(lambda x: x.is_staff)
 def user_update(request, pk):
     user_to_update = ShopUser.objects.get(pk=pk)
     title = f"Пользователь {user_to_update.username}"
 
     if request.method == "POST":
-        form = UserAdminEditForm(request.POST, request.FILES, instance=user_to_update)
+        form = UserAdminEditForm(
+            request.POST, request.FILES, instance=user_to_update)
         if form.is_valid():
             form.save()
             return user(request, pk)
@@ -85,6 +90,7 @@ def user_update(request, pk):
         return render(request, "adminapp/user_edit.html", content)
 
 
+@user_passes_test(lambda x: x.is_staff)
 def users_delete(request, pk):
     del_user = ShopUser.objects.get(pk=pk)
     if del_user.is_active:
@@ -99,7 +105,7 @@ def users_delete(request, pk):
 
 # CRUD for CATEGORY
 
-
+@user_passes_test(lambda x: x.is_staff)
 def category(request):
     title = "Категории"
     categorys = Category.objects.all()
@@ -112,13 +118,14 @@ def category(request):
     return render(request, "adminapp/category.html", content)
 
 
+@user_passes_test(lambda x: x.is_staff)
 def create_category(request):
     title = "Создать категорию"
 
     if request.method == "POST":
         form = CategoryCreationForm(request.POST)
         form.save()
-        return category(request)
+        return HttpResponseRedirect(reverse('admin:category'))
 
     form = CategoryCreationForm()
     content = {
@@ -130,6 +137,7 @@ def create_category(request):
     return render(request, "adminapp/category_create.html", content)
 
 
+@user_passes_test(lambda x: x.is_staff)
 def category_view(request, pk):
     title = "Категория"
     if pk == 1:
@@ -145,13 +153,15 @@ def category_view(request, pk):
     return render(request, "adminapp/category_view.html", content)
 
 
+@user_passes_test(lambda x: x.is_staff)
 def category_edit(request, pk):
     edit_category = Category.objects.get(pk=pk)
     title = f"Категория {edit_category.title}"
     if request.method == "POST":
-        form = CategoryCreationForm(request.POST, request.FILES, instance=edit_category)
+        form = CategoryCreationForm(
+            request.POST, request.FILES, instance=edit_category)
         form.save()
-        return category(request)
+        return HttpResponseRedirect(reverse('admin:category'))
 
     form = CategoryCreationForm(instance=edit_category)
     content = {
@@ -164,6 +174,7 @@ def category_edit(request, pk):
     return render(request, "adminapp/category_edit.html", content)
 
 
+@user_passes_test(lambda x: x.is_staff)
 def category_delete(request, pk):
     category_to_delete = Category.objects.get(pk=pk)
     category_to_delete.is_active = False if category_to_delete.is_active else True
