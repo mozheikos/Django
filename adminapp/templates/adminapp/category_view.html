@@ -1,0 +1,46 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="category_list_container">
+    <a class="adminapp_button" href="#">Добавить продукт в категорию</a>
+    <ul class="category_view_header cat_header category_list">
+        <li class="product_id">
+            ID
+        </li>
+        <li class="product_name">
+            Название
+        </li>
+        <li class="product_price">
+            Цена
+        </li>
+        <li class="product_count">
+            Количество
+        </li>
+        <li class="product_actions category_actions">
+            Действия
+        </li>
+    </ul>
+    {% for product in products %}
+    <ul class="category_view_list cat_row category_list">
+        <li class="product_id">
+            {{ product.pk }}
+        </li>
+        <li class="product_name">
+            {{ product.name }}
+        </li>
+        <li class="product_price">
+            {{ product.price }}
+        </li>
+        <li class="product_count">
+            {{ product.count }}
+        </li>
+        <li class="product_actions category_actions">
+            <a class="adminapp_button" href="#">Редактировать</a>
+            <a class="adminapp_button" href="#">Просмотр</a>
+            <a class="adminapp_button" href="#">Удалить</a>
+        </li>
+    </ul>
+    {% endfor %}
+    {% endblock content %}

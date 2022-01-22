@@ -5,6 +5,7 @@ from django.db.models.deletion import CASCADE
 class Category(models.Model):
     title = models.CharField(verbose_name="Название категории", max_length=64, unique=True)
     description = models.TextField(verbose_name="описание категории", blank=True)
+    is_active = models.BooleanField(verbose_name="категория активна", default=True)
 
     def __str__(self) -> str:
         return self.title

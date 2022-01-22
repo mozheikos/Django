@@ -1,0 +1,23 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<label class="find_label">
+    <input class="find_user" type="search" placeholder="Введите имя пользовател"></input>
+    <button type="button" class="find">Найти</button>
+    <a href="{% url 'admin:users_create' %}" class="adminapp_button">Добавить пользователя</a>
+</label>
+
+<ul class="users_header">
+    <li class="id">ID</li>
+    <li class="avatar">AVATAR</li>
+    <li class="username">USERNAME</li>
+    <li class="is_active">IS_ACTIVE</li>
+    <li class="is_staff">IS_STAFF</li>
+</ul>
+<div class="users_list">
+    {% include 'adminapp/includes/inc_users_list.html' %}
+</div>
+
+
+{% endblock content %}

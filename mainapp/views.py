@@ -38,7 +38,7 @@ def main(request):
 
 def products(request, product_pk=None, category_pk=0):
     title = "продукты"
-    links = Category.objects.all()
+    links = Category.objects.filter(is_active=True)
     hot = False
     product_large = None
     if product_pk:

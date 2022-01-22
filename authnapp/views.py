@@ -5,6 +5,7 @@ from django.contrib import auth
 from django.shortcuts import HttpResponseRedirect, render
 from django.urls import reverse
 
+from adminapp.forms import ShopUserAdminCreationForm
 from authnapp.forms import ShopUserEditForm, ShopUserLoginForm, ShopUserRegisterForm
 from authnapp.models import ShopUser
 
@@ -47,10 +48,15 @@ def register(request):
     title = "регистрация"
 
     if request.method == "POST":
-        register_form = ShopUserRegisterForm(request.POST, request.FILES)
+        if request.META.get("HTTP_REFERER").find("admin/users_create/") != -1:
+            register_form = ShopUserAdminCreationForm(request.POST, request.FILES)
+        else:
+            register_form = ShopUserRegisterForm(request.POST, request.FILES)
 
         if register_form.is_valid():
             register_form.save()
+            if request.META.get("HTTP_REFERER").find("admin/users_create/") != -1:
+                return HttpResponseRedirect(reverse("admin:users"))
             return HttpResponseRedirect(reverse("auth:login"))
     else:
         register_form = ShopUserRegisterForm()
