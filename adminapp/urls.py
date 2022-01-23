@@ -16,7 +16,7 @@ urlpatterns = [
     path("user_view/<int:pk>/", adminapp.UserDetailView.as_view(), name="user_view"),
     path("user_update/<int:pk>/",
          adminapp.UserUpdateView.as_view(), name="user_update"),
-    path("user_delete/<int:pk>/",
+    path("users/user_delete/<int:pk>/",
          adminapp.UserDeleteNotView.as_view(), name="user_delete"),
     # admin_category_CRUD
     path("category/", adminapp.category, name="category"),

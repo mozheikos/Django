@@ -12,7 +12,7 @@ from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.views.generic.edit import UpdateView, CreateView, DeleteView, DeletionMixin
 from django.views.generic.list import ListView
 
 
@@ -231,7 +231,21 @@ class UserDeleteNotView(LoginRequiredMixin, DeleteView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
-# CRUD for CATEGORY
+
+class UserDeleteAjax(LoginRequiredMixin, DeletionMixin):
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.is_active:
+            self.object.is_active = False
+        else:
+            self.object.is_active = True
+        self.object.save()
+        status = str(self.object.is_active)
+        return JsonResponse({"status": status})
+
+    def post(self, request, *args: str, **kwargs):
+        return super().post(request, *args, **kwargs)
+    # CRUD for CATEGORY
 
 
 @user_passes_test(lambda x: x.is_staff)
