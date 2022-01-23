@@ -1591,7 +1591,7 @@ td:first-child {
 
 .delete_confirm {
 	text-align: center;
-	margin: 20px 0;
+	margin: 20px 50px;
 	font-size: 20px;
 	font-weight: 800;
 }

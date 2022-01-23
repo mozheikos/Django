@@ -4,8 +4,7 @@
 {% block content %}
 
 <div class="user_profile_container">
-    <form class="form-horizontal" method="POST" action="{% url 'admin:user_update' user.pk %}"
-        enctype="multipart/form-data">
+    <form class="form-horizontal" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <a class="adminapp_button" href="{% url 'admin:users' %}">Назад</a>

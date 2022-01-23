@@ -6,39 +6,39 @@
 <div class="user_profile_container">
     <div class="user_profile_field">
         <span class="field">username</span>
-        <span class="value">{{ user.username }}</span>
+        <span class="value">{{ object.username }}</span>
     </div>
     <div class="user_profile_field">
         <span class="field">first name</span>
-        <span class="value">{{ user.first_name }}</span>
+        <span class="value">{{ object.first_name }}</span>
     </div>
     <div class="user_profile_field">
         <span class="field">last name</span>
-        <span class="value">{{ user.last_name }}</span>
+        <span class="value">{{ object.last_name }}</span>
     </div>
     <div class="user_profile_field">
         <span class="field">age</span>
-        <span class="value">{{ user.age|age }}</span>
+        <span class="value">{{ object.age|age }}</span>
     </div>
     <div class="user_profile_field av">
         <span class="field">avatar</span>
-        <span class="value"><img src="{{ media_url }}{{ user.avatar }}"></span>
+        <span class="value"><img src="{{ media_url }}{{ object.avatar }}"></span>
     </div>
     <div class="user_profile_field">
         <span class="field">active</span>
-        <span class="value">{{ user.is_active }}</span>
+        <span class="value">{{ object.is_active }}</span>
     </div>
     <div class="user_profile_field">
         <span class="field">staff</span>
-        <span class="value">{{ user.is_staff }}</span>
+        <span class="value">{{ object.is_staff }}</span>
     </div>
     <div class="user_profile_field">
         <span class="field">superuser</span>
-        <span class="value">{{ user.is_superuser }}</span>
+        <span class="value">{{ object.is_superuser }}</span>
     </div>
     <div class="user_profile_links">
         <a class="adminapp_button" href="{% url 'admin:users' %}">Назад</a>
-        <a class="adminapp_button" href="{% url 'admin:user_update' user.pk %}">Редактировать</a>
+        <a class="adminapp_button" href="{% url 'admin:user_update' object.pk %}">Редактировать</a>
     </div>
 </div>
 
