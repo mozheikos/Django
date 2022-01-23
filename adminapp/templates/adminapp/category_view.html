@@ -24,7 +24,7 @@
         </li>
     </ul>
     {% for product in products %}
-    <ul class="category_view_list cat_row category_list">
+    <ul class="category_view_list cat_row category_list {% if not product.is_active %}not_active{% endif %}">
         <li class="product_id">
             {{ product.pk }}
         </li>
@@ -39,7 +39,9 @@
         </li>
         <li class="product_actions category_actions">
             <a class="adminapp_button" href="{% url 'admin:product' product.pk %}">Просмотр</a>
-            <a class="adminapp_button" href="#">Удалить</a>
+            <a class="adminapp_button" href="{% url 'admin:product_delete' product.pk %}">
+                {% if product.is_active %}Удалить{% else %}Восстановить{% endif %}
+            </a>
         </li>
     </ul>
     {% endfor %}

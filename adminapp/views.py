@@ -11,7 +11,7 @@ from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import UpdateView, CreateView
+from django.views.generic.edit import UpdateView, CreateView, DeleteView, DeletionMixin
 
 
 @user_passes_test(lambda x: x.is_staff)
@@ -192,7 +192,6 @@ def category_delete(request, pk):
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     template_name = 'adminapp/create_product.html'
-
     fields = '__all__'
 
     def get_context_data(self, **kwargs):
@@ -202,6 +201,8 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
             pk=cat_pk)
         context['form'].fields['category'].queryset = Category.objects.filter(
             pk__gt=1, is_active=True)
+        for field in context['form'].fields.keys():
+            context['form'].fields[field].widget.attrs["class"] = "form_field"
         context['category'] = cat_pk
         context["title"] = f'Добавить продукт'
         context["media_url"] = settings.MEDIA_URL
@@ -233,6 +234,28 @@ class ProductEditView(LoginRequiredMixin, UpdateView):
         context["title"] = f'Редактировать {self.kwargs["pk"]}'
         context["media_url"] = settings.MEDIA_URL
         context['active'] = 'category'
+        for field in context['form'].fields.keys():
+            context['form'].fields[field].widget.attrs["class"] = "form_field"
         ProductEditView.success_url = reverse_lazy(
             f'admin:product', args=[self.kwargs["pk"]])
         return context
+
+
+class ProductDeleteNotView(LoginRequiredMixin, DeleteView):
+    model = Product
+    template_name = 'adminapp/product_delete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.is_active:
+            self.object.is_active = False
+        else:
+            self.object.is_active = True
+        self.object.save()
+        success_url = reverse_lazy('admin:category_view', args=[
+                                   self.object.category_id])
+        return HttpResponseRedirect(success_url)

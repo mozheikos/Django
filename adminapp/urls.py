@@ -30,5 +30,7 @@ urlpatterns = [
     path('product_update/<int:pk>',
          adminapp.ProductEditView.as_view(), name='product_update'),
     path('product_create/<int:category>',
-         adminapp.ProductCreateView.as_view(), name='product_create')
+         adminapp.ProductCreateView.as_view(), name='product_create'),
+    path('product_delete/<int:pk>',
+         adminapp.ProductDeleteNotView.as_view(), name="product_delete"),
 ]

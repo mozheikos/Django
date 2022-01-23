@@ -1,4 +1,5 @@
 from dataclasses import fields
+from pyexpat import model
 
 from django.contrib.auth import forms, models
 
@@ -7,7 +8,7 @@ from django.forms.models import ModelForm
 
 from authnapp.forms import ShopUserEditForm, ShopUserRegisterForm
 from authnapp.models import ShopUser
-from mainapp.models import Category
+from mainapp.models import Category, Product
 
 
 class ShopUserAdminCreationForm(ShopUserRegisterForm):
@@ -18,7 +19,8 @@ class ShopUserAdminCreationForm(ShopUserRegisterForm):
 
     class Meta:
         model = ShopUser
-        fields = ("username", "password1", "password2", "age", "is_staff", "is_superuser")
+        fields = ("username", "password1", "password2",
+                  "age", "is_staff", "is_superuser")
 
 
 class UserAdminEditForm(ShopUserEditForm):

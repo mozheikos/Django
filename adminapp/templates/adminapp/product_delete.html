@@ -1,0 +1,28 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="user_profile_container">
+    <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+        <h2 class="delete_confirm">Подтвердите действие:</h2><br>
+        <label class="delete_label">Продукт:
+            <span class="delete_confirm">{{product.name|title}}</span>
+        </label>
+        <label class="delete_label">Категория:
+            <span class="delete_confirm">{{product.category.title|title}}</span>
+        </label><br>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="buttons">
+            <a class="adminapp_button" href="{% url 'admin:product' product.pk %}">Назад</a>
+            {% if product.is_active %}
+            <input class="adminapp_button" type="submit" value="Удалить">
+            {% else %}
+            <input class="adminapp_button" type="submit" value="Восстановить">
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
