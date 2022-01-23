@@ -4,7 +4,8 @@
 {% block content %}
 
 <div class="category_list_container">
-    <a class="adminapp_button" href="#">Добавить продукт в категорию</a>
+    <a class="adminapp_button" href="{% url 'admin:product_create' category %}">Добавить продукт в категорию</a>
+    <a class="adminapp_button" href="{% url 'admin:category' %}">Назад</a>
     <ul class="category_view_header cat_header category_list">
         <li class="product_id">
             ID
@@ -37,8 +38,7 @@
             {{ product.count }}
         </li>
         <li class="product_actions category_actions">
-            <a class="adminapp_button" href="#">Редактировать</a>
-            <a class="adminapp_button" href="#">Просмотр</a>
+            <a class="adminapp_button" href="{% url 'admin:product' product.pk %}">Просмотр</a>
             <a class="adminapp_button" href="#">Удалить</a>
         </li>
     </ul>

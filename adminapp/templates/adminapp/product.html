@@ -1,0 +1,42 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+
+<div class="user_profile_container">
+    <div class="user_profile_field">
+        <span class="field">Категория</span>
+        <span class="value">{{ object.category.title }}</span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Название</span>
+        <span class="value">{{ object.name }}</span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Цена, руб.</span>
+        <span class="value">{{ object.price }}</span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Количество на складе, шт.</span>
+        <span class="value">{{ object.count }}</span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Изображение</span>
+        <span class="value"><img src="{{ media_url }}{{ object.image }}"></span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Краткое описание</span>
+        <span class="value">{{ object.short_desc }}</span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Описание товара</span>
+        <span class="value">{{ object.description }}</span>
+    </div>
+
+    <div class="user_profile_links">
+        <a class="adminapp_button" href="{% url 'admin:category_view' object.category.pk %}">Назад</a>
+        <a class="adminapp_button" href="{% url 'admin:product_update' object.pk %}">Редактировать</a>
+    </div>
+</div>
+
+{% endblock content %}

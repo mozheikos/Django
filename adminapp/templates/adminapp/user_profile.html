@@ -1,6 +1,6 @@
 {% extends 'adminapp/base.html' %}
 {% load static %}
-
+{% load my_tags %}
 {% block content %}
 
 <div class="user_profile_container">
@@ -18,7 +18,7 @@
     </div>
     <div class="user_profile_field">
         <span class="field">age</span>
-        <span class="value">{{ user.age }}</span>
+        <span class="value">{{ user.age|age }}</span>
     </div>
     <div class="user_profile_field av">
         <span class="field">avatar</span>

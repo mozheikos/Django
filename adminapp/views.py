@@ -1,13 +1,17 @@
+from dataclasses import fields
+from webbrowser import get
+from mainapp.models import Category, Product
+from authnapp.models import ShopUser
+from adminapp.forms import CategoryCreationForm, ShopUserAdminCreationForm, UserAdminEditForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
-from django.http import JsonResponse
-from django.shortcuts import HttpResponseRedirect, render
+from django.http import JsonResponse, request
+from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
 from django.template.loader import render_to_string
-from django.urls import reverse
-
-from adminapp.forms import CategoryCreationForm, ShopUserAdminCreationForm, UserAdminEditForm
-from authnapp.models import ShopUser
-from mainapp.models import Category, Product
+from django.urls import reverse, reverse_lazy
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import UpdateView, CreateView
 
 
 @user_passes_test(lambda x: x.is_staff)
@@ -149,6 +153,7 @@ def category_view(request, pk):
         "products": products,
         "media_url": settings.MEDIA_URL,
         "active": "category",
+        'category': pk
     }
     return render(request, "adminapp/category_view.html", content)
 
@@ -181,3 +186,53 @@ def category_delete(request, pk):
     category_to_delete.save()
     status = category_to_delete.is_active
     return JsonResponse({"status": str(status)})
+
+
+# products crud
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    model = Product
+    template_name = 'adminapp/create_product.html'
+
+    fields = '__all__'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cat_pk = self.kwargs["category"]
+        context['form'].fields['category'].initial = Category.objects.get(
+            pk=cat_pk)
+        context['form'].fields['category'].queryset = Category.objects.filter(
+            pk__gt=1, is_active=True)
+        context['category'] = cat_pk
+        context["title"] = f'Добавить продукт'
+        context["media_url"] = settings.MEDIA_URL
+        context['active'] = 'category'
+        ProductCreateView.success_url = reverse_lazy(
+            'admin:category_view', args=[cat_pk])
+        return context
+
+
+class ProductDetailView(LoginRequiredMixin, DetailView):
+    model = Product
+    template_name = 'adminapp/product.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Продукты'
+        context["media_url"] = settings.MEDIA_URL
+        context['active'] = 'category'
+        return context
+
+
+class ProductEditView(LoginRequiredMixin, UpdateView):
+    model = Product
+    template_name = 'adminapp/product_edit.html'
+    fields = '__all__'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductEditView, self).get_context_data(**kwargs)
+        context["title"] = f'Редактировать {self.kwargs["pk"]}'
+        context["media_url"] = settings.MEDIA_URL
+        context['active'] = 'category'
+        ProductEditView.success_url = reverse_lazy(
+            f'admin:product', args=[self.kwargs["pk"]])
+        return context
