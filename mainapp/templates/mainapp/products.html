@@ -26,10 +26,10 @@
 			{% if same_products.has_previous %}
 			{% if product_large %}
 			<a href="{% url 'products:page' category product_large.pk same_products.previous_page_number %}"><i
-					class="fas fa-chevron-circle-right"></i></a>
+					class="fas fa-chevron-circle-left"></i></a>
 			{% else %}
 			<a href="{% url 'products:page' category same_products.previous_page_number %}"><i
-					class="fas fa-chevron-circle-right"></i></a>
+					class="fas fa-chevron-circle-left"></i></a>
 			{% endif %}
 			{% endif %}
 			<span class="current">

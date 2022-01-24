@@ -1447,8 +1447,8 @@ td:first-child {
 }
 
 .not_active {
-	background: rgba(33, 33, 33, 0.2);
-	opacity: 0.5;
+	background: rgba(175, 175, 175);
+	/*opacity: 0.5;*/
 }
 
 .delete_user {
@@ -1605,4 +1605,24 @@ td:first-child {
 	max-width: 500px;
 	margin: 0 auto;
 	justify-content: space-between;
+}
+.delete_form {
+	display: none;
+	align-items: center;
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(150, 150, 150, 0.5);
+}
+.show {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: rgb(228, 227, 227);
+}
+.show > div {
+	margin: 20px 0;
 }

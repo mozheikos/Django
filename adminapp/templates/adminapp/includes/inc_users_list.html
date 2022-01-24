@@ -7,8 +7,20 @@
     <li class="username"><a href="{% url 'admin:user_view' object.pk %}">{{ object.username }}</a></li>
     <li class="is_active"><span class="user_status">{{ object.is_active }}</span></li>
     <li class="is_staff"><span class="user_status">{{ object.is_staff }}</span></li>
-    <li class="user_delete"><a href="{% url 'admin:user_delete' object.pk %}" data-pk="{{object.pk}}"
-            class="adminapp_button del_usr">
+    <li class="user_delete">
+        <form class="delete_form" method="post" enctype="multipart/form-data">
+            <div class="delete_msg">
+                <h2>Подтвердите действие:</h2>
+                <div>Пользователь: {{object.username}}</div>
+            </div>
+            {% csrf_token %}
+            <!-- Это вставит джанго вместо шаблонного тега: <input type="hidden" name="csrfmiddlewaretoken" value="CSRF-токен"> -->
+            <input class="adminapp_button" type="hidden" name="pk" value="{{ object.pk }}">
+            <input class="adminapp_button confirm" type="submit" name="submit"
+                value="{% if object.is_active %}Удалить{%else%}Восстановить{%endif%}">
+            <button class="adminapp_button cancel" action="{% url 'admin:users' %}">Отмена</button>
+        </form>
+        <a href="{% url 'admin:user_delete' object.pk %}" data-pk="{{object.pk}}" class="adminapp_button del_usr">
             {% if object.is_active %}Удалить{% else %}Восстановить{% endif %}</a>
     </li>
 </ul>

@@ -208,7 +208,7 @@ def users_delete(request, pk):
     return JsonResponse({"status": status})"""
 
 
-class UserDeleteNotView(LoginRequiredMixin, DeleteView):
+"""class UserDeleteNotView(LoginRequiredMixin, DeleteView):
     model = ShopUser
     template_name = 'adminapp/user_delete.html'
     success_url = reverse_lazy('admin:users')
@@ -229,22 +229,29 @@ class UserDeleteNotView(LoginRequiredMixin, DeleteView):
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)"""
 
 
-class UserDeleteAjax(LoginRequiredMixin, DeletionMixin):
+class UserDeleteAjax(LoginRequiredMixin, DeleteView):
+    model = ShopUser
+
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.is_active:
             self.object.is_active = False
+            status = str(False)
         else:
             self.object.is_active = True
+            status = str(True)
         self.object.save()
-        status = str(self.object.is_active)
         return JsonResponse({"status": status})
 
     def post(self, request, *args: str, **kwargs):
-        return super().post(request, *args, **kwargs)
+        return self.delete(request, *args, **kwargs)
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
     # CRUD for CATEGORY
 
 
@@ -377,10 +384,15 @@ class ProductEditView(LoginRequiredMixin, UpdateView):
     fields = '__all__'
 
     def get_context_data(self, **kwargs):
-        context = super(ProductEditView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["title"] = f'Редактировать {self.kwargs["pk"]}'
         context["media_url"] = settings.MEDIA_URL
         context['active'] = 'category'
+        cat_pk = self.object.pk
+        context['form'].fields['category'].initial = Category.objects.get(
+            pk=cat_pk)
+        context['form'].fields['category'].queryset = Category.objects.filter(
+            pk__gt=1, is_active=True)
         for field in context['form'].fields.keys():
             context['form'].fields[field].widget.attrs["class"] = "form_field"
         ProductEditView.success_url = reverse_lazy(
