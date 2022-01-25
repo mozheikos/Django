@@ -1,7 +1,8 @@
 import json
-from random import randint, choice
-from django.core.paginator import Paginator
+from random import choice, randint
+
 from django.conf import settings
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -17,14 +18,14 @@ def get_controller_data(file_name):
 
 
 def get_random_product():
-    products = Product.objects.filter(is_active=True)
+    products = Product.objects.filter(is_active=True, category__is_active=True)
     return choice(products)
 
 
 def main(request):
     title = "Главная"
 
-    products = Product.objects.all()
+    products = Product.objects.filter(is_active=True, category__is_active=True)
     basket_count = []
     basket_cost = []
     if request.user.is_authenticated:
@@ -48,20 +49,21 @@ def products(request, product_pk=None, category_pk=0, page=1):
     product_large = None
     if product_pk:
         product_large = Product.objects.get(pk=product_pk)
-        same_products = Product.objects.filter(
-            category_id=product_large.category_id, is_active=True).exclude(pk=product_pk)
+        same_products = Product.objects.filter(category_id=product_large.category_id, is_active=True).exclude(
+            pk=product_pk
+        )
     else:
         if not category_pk:
             product_large = get_random_product()
             category_pk = product_large.category_id
-            same_products = Product.objects.filter(
-                category_id=product_large.category_id, is_active=True).exclude(pk=product_large.pk)
+            same_products = Product.objects.filter(category_id=product_large.category_id, is_active=True).exclude(
+                pk=product_large.pk
+            )
             hot = True
         elif category_pk == 1:
-            same_products = Product.objects.filter(is_active=True)
+            same_products = Product.objects.filter(is_active=True, category__is_active=True)
         else:
-            same_products = Product.objects.filter(
-                category_id=category_pk, is_active=True)
+            same_products = Product.objects.filter(category_id=category_pk, is_active=True)
 
     paginator = Paginator(same_products, 3)
     products_paginator = paginator.page(page)

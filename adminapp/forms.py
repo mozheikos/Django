@@ -1,10 +1,10 @@
 from dataclasses import fields
-from pyexpat import model
 
 from django.contrib.auth import forms, models
 
 # from django.contrib.auth.forms import AuthenticationForm, UserChangeForm, UserCreationForm
 from django.forms.models import ModelForm
+from pyexpat import model
 
 from authnapp.forms import ShopUserEditForm, ShopUserRegisterForm
 from authnapp.models import ShopUser
@@ -19,8 +19,7 @@ class ShopUserAdminCreationForm(ShopUserRegisterForm):
 
     class Meta:
         model = ShopUser
-        fields = ("username", "password1", "password2",
-                  "age", "is_staff", "is_superuser")
+        fields = ("username", "password1", "password2", "age", "is_staff", "is_superuser")
 
 
 class UserAdminEditForm(ShopUserEditForm):

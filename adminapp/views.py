@@ -1,19 +1,21 @@
 from dataclasses import fields
 from webbrowser import get
-from mainapp.models import Category, Product
-from authnapp.models import ShopUser
-from adminapp.forms import CategoryCreationForm, ShopUserAdminCreationForm, UserAdminEditForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
-from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, request
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import UpdateView, CreateView, DeleteView, DeletionMixin
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
+
+from adminapp.forms import CategoryCreationForm, ShopUserAdminCreationForm
+from authnapp.models import ShopUser
+from mainapp.models import Category, Product
 
 
 @user_passes_test(lambda x: x.is_staff)
@@ -51,19 +53,17 @@ def users(request, username=None):
 
 class UsersListView(LoginRequiredMixin, ListView):
     model = ShopUser
-    template_name = 'adminapp/users.html'
+    template_name = "adminapp/users.html"
 
     def get_context_data(self, **kwargs):
         context = super(UsersListView, self).get_context_data(**kwargs)
-        context["title"] = 'Пользователи'
+        context["title"] = "Пользователи"
         context["media_url"] = settings.MEDIA_URL
-        context['login_url'] = settings.LOGIN_URL
-        context['active'] = 'users'
-        username = self.kwargs['username'] if 'username' in self.kwargs.keys(
-        ) else None
+        context["login_url"] = settings.LOGIN_URL
+        context["active"] = "users"
+        username = self.kwargs["username"] if "username" in self.kwargs.keys() else None
         if username:
-            self.queryset = ShopUser.objects.filter(
-                username__contains=username)
+            self.queryset = ShopUser.objects.filter(username__contains=username)
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -86,14 +86,14 @@ def user(request, pk):
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = ShopUser
-    template_name = 'adminapp/user_profile.html'
+    template_name = "adminapp/user_profile.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = f'Пользователь {self.object.username}'
+        context["title"] = f"Пользователь {self.object.username}"
         context["media_url"] = settings.MEDIA_URL
-        context['login_url'] = settings.LOGIN_URL
-        context['active'] = 'users'
+        context["login_url"] = settings.LOGIN_URL
+        context["active"] = "users"
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -117,19 +117,19 @@ def create_user(request):
 
 class UserCreateView(LoginRequiredMixin, CreateView):
     model = ShopUser
-    template_name = 'adminapp/create_user.html'
+    template_name = "adminapp/create_user.html"
     form_class = ShopUserAdminCreationForm
-    success_url = reverse_lazy('admin:users')
+    success_url = reverse_lazy("admin:users")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        for field in context['form'].fields.keys():
-            if context['form'].fields[field].help_text:
-                context['form'].fields[field].help_text = None
-        context["title"] = f'Добавить пользователя'
+        for field in context["form"].fields.keys():
+            if context["form"].fields[field].help_text:
+                context["form"].fields[field].help_text = None
+        context["title"] = f"Добавить пользователя"
         context["media_url"] = settings.MEDIA_URL
-        context['login_url'] = settings.LOGIN_URL
-        context['active'] = 'users'
+        context["login_url"] = settings.LOGIN_URL
+        context["active"] = "users"
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -139,7 +139,7 @@ class UserCreateView(LoginRequiredMixin, CreateView):
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = ShopUser
-    template_name = 'adminapp/user_edit.html'
+    template_name = "adminapp/user_edit.html"
     fields = (
         "username",
         "first_name",
@@ -154,15 +154,14 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        for field in context['form'].fields.keys():
-            if context['form'].fields[field].help_text:
-                context['form'].fields[field].help_text = None
-        context["title"] = f'Редактировать пользователя'
+        for field in context["form"].fields.keys():
+            if context["form"].fields[field].help_text:
+                context["form"].fields[field].help_text = None
+        context["title"] = f"Редактировать пользователя"
         context["media_url"] = settings.MEDIA_URL
-        context['login_url'] = settings.LOGIN_URL
-        context['active'] = 'users'
-        UserUpdateView.success_url = reverse_lazy(
-            'admin:user_view', args=[self.object.pk])
+        context["login_url"] = settings.LOGIN_URL
+        context["active"] = "users"
+        UserUpdateView.success_url = reverse_lazy("admin:user_view", args=[self.object.pk])
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -252,6 +251,7 @@ class UserDeleteAjax(LoginRequiredMixin, DeleteView):
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
     # CRUD for CATEGORY
 
 
@@ -275,7 +275,7 @@ def create_category(request):
     if request.method == "POST":
         form = CategoryCreationForm(request.POST)
         form.save()
-        return HttpResponseRedirect(reverse('admin:category'))
+        return HttpResponseRedirect(reverse("admin:category"))
 
     form = CategoryCreationForm()
     content = {
@@ -299,7 +299,7 @@ def category_view(request, pk):
         "products": products,
         "media_url": settings.MEDIA_URL,
         "active": "category",
-        'category': pk
+        "category": pk,
     }
     return render(request, "adminapp/category_view.html", content)
 
@@ -309,10 +309,9 @@ def category_edit(request, pk):
     edit_category = Category.objects.get(pk=pk)
     title = f"Категория {edit_category.title}"
     if request.method == "POST":
-        form = CategoryCreationForm(
-            request.POST, request.FILES, instance=edit_category)
+        form = CategoryCreationForm(request.POST, request.FILES, instance=edit_category)
         form.save()
-        return HttpResponseRedirect(reverse('admin:category'))
+        return HttpResponseRedirect(reverse("admin:category"))
 
     form = CategoryCreationForm(instance=edit_category)
     content = {
@@ -337,24 +336,21 @@ def category_delete(request, pk):
 # products crud
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
-    template_name = 'adminapp/create_product.html'
-    fields = '__all__'
+    template_name = "adminapp/create_product.html"
+    fields = "__all__"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cat_pk = self.kwargs["category"]
-        context['form'].fields['category'].initial = Category.objects.get(
-            pk=cat_pk)
-        context['form'].fields['category'].queryset = Category.objects.filter(
-            pk__gt=1, is_active=True)
-        for field in context['form'].fields.keys():
-            context['form'].fields[field].widget.attrs["class"] = "form_field"
-        context['category'] = cat_pk
-        context["title"] = f'Добавить продукт'
+        context["form"].fields["category"].initial = Category.objects.get(pk=cat_pk)
+        context["form"].fields["category"].queryset = Category.objects.filter(pk__gt=1, is_active=True)
+        for field in context["form"].fields.keys():
+            context["form"].fields[field].widget.attrs["class"] = "form_field"
+        context["category"] = cat_pk
+        context["title"] = f"Добавить продукт"
         context["media_url"] = settings.MEDIA_URL
-        context['active'] = 'category'
-        ProductCreateView.success_url = reverse_lazy(
-            'admin:category_view', args=[cat_pk])
+        context["active"] = "category"
+        ProductCreateView.success_url = reverse_lazy("admin:category_view", args=[cat_pk])
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -364,13 +360,13 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
-    template_name = 'adminapp/product.html'
+    template_name = "adminapp/product.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Продукты'
+        context["title"] = "Продукты"
         context["media_url"] = settings.MEDIA_URL
-        context['active'] = 'category'
+        context["active"] = "category"
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -380,23 +376,20 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
 
 class ProductEditView(LoginRequiredMixin, UpdateView):
     model = Product
-    template_name = 'adminapp/product_edit.html'
-    fields = '__all__'
+    template_name = "adminapp/product_edit.html"
+    fields = "__all__"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = f'Редактировать {self.kwargs["pk"]}'
         context["media_url"] = settings.MEDIA_URL
-        context['active'] = 'category'
-        cat_pk = self.object.pk
-        context['form'].fields['category'].initial = Category.objects.get(
-            pk=cat_pk)
-        context['form'].fields['category'].queryset = Category.objects.filter(
-            pk__gt=1, is_active=True)
-        for field in context['form'].fields.keys():
-            context['form'].fields[field].widget.attrs["class"] = "form_field"
-        ProductEditView.success_url = reverse_lazy(
-            f'admin:product', args=[self.kwargs["pk"]])
+        context["active"] = "category"
+        cat_pk = self.object.category_id
+        context["form"].fields["category"].initial = Category.objects.get(pk=cat_pk)
+        context["form"].fields["category"].queryset = Category.objects.filter(pk__gt=1, is_active=True)
+        for field in context["form"].fields.keys():
+            context["form"].fields[field].widget.attrs["class"] = "form_field"
+        ProductEditView.success_url = reverse_lazy(f"admin:product", args=[self.kwargs["pk"]])
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -406,7 +399,7 @@ class ProductEditView(LoginRequiredMixin, UpdateView):
 
 class ProductDeleteNotView(LoginRequiredMixin, DeleteView):
     model = Product
-    template_name = 'adminapp/product_delete.html'
+    template_name = "adminapp/product_delete.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -419,8 +412,7 @@ class ProductDeleteNotView(LoginRequiredMixin, DeleteView):
         else:
             self.object.is_active = True
         self.object.save()
-        success_url = reverse_lazy('admin:category_view', args=[
-                                   self.object.category_id])
+        success_url = reverse_lazy("admin:category_view", args=[self.object.category_id])
         return HttpResponseRedirect(success_url)
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
