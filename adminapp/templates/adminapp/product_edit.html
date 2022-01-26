@@ -7,7 +7,7 @@
     <form class="form-horizontal" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <a class="adminapp_button" href="{% url 'admin:users' %}">Назад</a>
+        <a class="adminapp_button" href="{% url 'admin:product' product.pk %}">Назад</a>
         <input class="adminapp_button" type="submit" value="сохранить">
     </form>
 </div>

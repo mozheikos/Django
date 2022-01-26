@@ -4,10 +4,11 @@ from django.contrib.auth import forms, models
 
 # from django.contrib.auth.forms import AuthenticationForm, UserChangeForm, UserCreationForm
 from django.forms.models import ModelForm
+from pyexpat import model
 
 from authnapp.forms import ShopUserEditForm, ShopUserRegisterForm
 from authnapp.models import ShopUser
-from mainapp.models import Category
+from mainapp.models import Category, Product
 
 
 class ShopUserAdminCreationForm(ShopUserRegisterForm):

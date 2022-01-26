@@ -22,6 +22,29 @@
 			<h2>{% if not product_large %}Все продукты{% else %}Похожие продукты{% endif %}</h2>
 			<a class="explore" href="#">показать все <img src="{% static 'img/arrow.png' %}" alt=""></a>
 		</div>
+		<div class="paginator">
+			{% if same_products.has_previous %}
+			{% if product_large %}
+			<a href="{% url 'products:page' category product_large.pk same_products.previous_page_number %}"><i
+					class="fas fa-chevron-circle-left"></i></a>
+			{% else %}
+			<a href="{% url 'products:page' category same_products.previous_page_number %}"><i
+					class="fas fa-chevron-circle-left"></i></a>
+			{% endif %}
+			{% endif %}
+			<span class="current">
+				страница {{ same_products.number }} из {{ same_products.paginator.num_pages }}
+			</span>
+			{% if same_products.has_next %}
+			{% if product_large %}
+			<a href="{% url 'products:page' category product_large.pk same_products.next_page_number %}"><i
+					class="fas fa-chevron-circle-right"></i></a>
+			{% else %}
+			<a href="{% url 'products:page' category same_products.next_page_number %}"><i
+					class="fas fa-chevron-circle-right"></i></a>
+			{% endif %}
+			{% endif %}
+		</div>
 		<div class="related-products clearfix">
 			{% include 'mainapp/includes/inc_same_products.html' %}
 		</div>

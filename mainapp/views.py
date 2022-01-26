@@ -1,7 +1,8 @@
 import json
-from random import randint
+from random import choice, randint
 
 from django.conf import settings
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -16,10 +17,15 @@ def get_controller_data(file_name):
     return data
 
 
+def get_random_product():
+    products = Product.objects.filter(is_active=True, category__is_active=True)
+    return choice(products)
+
+
 def main(request):
     title = "Главная"
 
-    products = Product.objects.all()
+    products = Product.objects.filter(is_active=True, category__is_active=True)
     basket_count = []
     basket_cost = []
     if request.user.is_authenticated:
@@ -36,24 +42,31 @@ def main(request):
     return render(request, "mainapp/index.html", content)
 
 
-def products(request, product_pk=None, category_pk=0):
+def products(request, product_pk=None, category_pk=0, page=1):
     title = "продукты"
     links = Category.objects.filter(is_active=True)
     hot = False
     product_large = None
     if product_pk:
         product_large = Product.objects.get(pk=product_pk)
-        same_products = Product.objects.filter(category_id=product_large.category_id).exclude(pk=product_pk)
+        same_products = Product.objects.filter(category_id=product_large.category_id, is_active=True).exclude(
+            pk=product_pk
+        )
     else:
         if not category_pk:
-            product_large = Product.objects.get(pk=randint(1, Product.objects.all().count()))
+            product_large = get_random_product()
             category_pk = product_large.category_id
-            same_products = Product.objects.filter(category_id=product_large.category_id).exclude(pk=product_pk)
+            same_products = Product.objects.filter(category_id=product_large.category_id, is_active=True).exclude(
+                pk=product_large.pk
+            )
             hot = True
         elif category_pk == 1:
-            same_products = Product.objects.all()
+            same_products = Product.objects.filter(is_active=True, category__is_active=True)
         else:
-            same_products = Product.objects.filter(category_id=category_pk)
+            same_products = Product.objects.filter(category_id=category_pk, is_active=True)
+
+    paginator = Paginator(same_products, 3)
+    products_paginator = paginator.page(page)
 
     basket_count = []
     basket_cost = []
@@ -64,7 +77,7 @@ def products(request, product_pk=None, category_pk=0):
     content = {
         "title": title,
         "links": links,
-        "same_products": same_products,
+        "same_products": products_paginator,
         "product_large": product_large,
         "media_url": settings.MEDIA_URL,
         "category": category_pk,
