@@ -10,18 +10,10 @@ from mainapp.models import Product
 @login_required
 def basket(request):
     title = f"Корзина пользователя: {request.user.username}"
-    basket_items = []
-    basket_count = []
-    basket_cost = []
-    basket_items = Basket.objects.filter(user=request.user)
-    basket_count = Basket.product_count(request.user)
-    basket_cost = Basket.total_cost(request.user)
+
     back = request.META.get("HTTP_REFERER")
     content = {
         "title": title,
-        "basket_items": basket_items,
-        "basket_count": basket_count,
-        "basket_cost": basket_cost,
         "media_url": settings.MEDIA_URL,
         "back": back,
     }
@@ -73,5 +65,6 @@ def edit_quantity(request, pk, quantity):
     basket_cost = Basket.total_cost(request.user)
     product_cost = edit_elem.product_cost
     return JsonResponse(
-        {"quantity": quantity, "basket_count": basket_count, "basket_cost": basket_cost, "product_cost": product_cost}
+        {"quantity": quantity, "basket_count": basket_count,
+            "basket_cost": basket_cost, "product_cost": product_cost}
     )

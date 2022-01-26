@@ -26,18 +26,11 @@ def main(request):
     title = "Главная"
 
     products = Product.objects.filter(is_active=True, category__is_active=True)
-    basket_count = []
-    basket_cost = []
-    if request.user.is_authenticated:
-        basket_count = Basket.product_count(request.user)
-        basket_cost = Basket.total_cost(request.user)
 
     content = {
         "title": title,
         "products": products,
         "media_url": settings.MEDIA_URL,
-        "basket_count": basket_count,
-        "basket_cost": basket_cost,
     }
     return render(request, "mainapp/index.html", content)
 
@@ -61,18 +54,14 @@ def products(request, product_pk=None, category_pk=0, page=1):
             )
             hot = True
         elif category_pk == 1:
-            same_products = Product.objects.filter(is_active=True, category__is_active=True)
+            same_products = Product.objects.filter(
+                is_active=True, category__is_active=True)
         else:
-            same_products = Product.objects.filter(category_id=category_pk, is_active=True)
+            same_products = Product.objects.filter(
+                category_id=category_pk, is_active=True)
 
     paginator = Paginator(same_products, 3)
     products_paginator = paginator.page(page)
-
-    basket_count = []
-    basket_cost = []
-    if request.user.is_authenticated:
-        basket_count = Basket.product_count(request.user)
-        basket_cost = Basket.total_cost(request.user)
 
     content = {
         "title": title,
@@ -81,8 +70,6 @@ def products(request, product_pk=None, category_pk=0, page=1):
         "product_large": product_large,
         "media_url": settings.MEDIA_URL,
         "category": category_pk,
-        "basket_count": basket_count,
-        "basket_cost": basket_cost,
         "hot": hot,
     }
     if category_pk:
@@ -93,11 +80,6 @@ def products(request, product_pk=None, category_pk=0, page=1):
 def contact(request):
     title = "о нас"
 
-    basket_count = []
-    basket_cost = []
-    if request.user.is_authenticated:
-        basket_count = Basket.product_count(request.user)
-        basket_cost = Basket.total_cost(request.user)
     contact_cards = Contact.objects.all()
     today = timezone.now()
 
@@ -105,7 +87,5 @@ def contact(request):
         "title": title,
         "visit_date": today,
         "contact_cards": contact_cards,
-        "basket_count": basket_count,
-        "basket_cost": basket_cost,
     }
     return render(request, "mainapp/contact.html", content)
