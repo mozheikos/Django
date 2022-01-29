@@ -111,6 +111,10 @@ def verify(request, user_id, user_auth_key):
         user.save()
         auth.login(request, user)
         link = reverse('main')
+
+    # Пока закооментировал вариант истекшим ключем, так как очень не хватает времени
+    # лекцию в пятницу я пропустил из-за работы, а на след неделе возможности нагнать
+    #  не предвидится. Но чисто технически переотправка ключа нужна
     # else:
     #    user.get_auth_key()
     #    link = reverse('auth:resend_verify_link', args=[user.id])
