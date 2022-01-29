@@ -36,11 +36,14 @@ def main(request):
 
 
 def products(request, product_pk=None, category_pk=0, page=1):
+    category_pk = int(category_pk)
+    page = int(page)
     title = "продукты"
     links = Category.objects.filter(is_active=True)
     hot = False
     product_large = None
     if product_pk:
+        product_pk = int(product_pk)
         product_large = Product.objects.get(pk=product_pk)
         same_products = Product.objects.filter(category_id=product_large.category_id, is_active=True).exclude(
             pk=product_pk
@@ -54,11 +57,9 @@ def products(request, product_pk=None, category_pk=0, page=1):
             )
             hot = True
         elif category_pk == 1:
-            same_products = Product.objects.filter(
-                is_active=True, category__is_active=True)
+            same_products = Product.objects.filter(is_active=True, category__is_active=True)
         else:
-            same_products = Product.objects.filter(
-                category_id=category_pk, is_active=True)
+            same_products = Product.objects.filter(category_id=category_pk, is_active=True)
 
     paginator = Paginator(same_products, 3)
     products_paginator = paginator.page(page)

@@ -10,7 +10,5 @@ urlpatterns = [
     re_path(r"^profile/$", authnapp.user_profile, name="profile"),
     re_path(r"^register/$", authnapp.register, name="register"),
     re_path(r"^user_edit/$", authnapp.user_edit, name="user_edit"),
-
-    re_path(r"^verify/(?P<user_id>\d+)/(?P<user_auth_key>\w+)/$",
-            authnapp.verify, name="verify"),
+    re_path(r"^verify/(?P<user_id>\d+)/(?P<user_auth_key>\w+)/$", authnapp.verify, name="verify"),
 ]
