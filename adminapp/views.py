@@ -1,6 +1,3 @@
-from dataclasses import fields
-from webbrowser import get
-
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -61,9 +58,11 @@ class UsersListView(LoginRequiredMixin, ListView):
         context["media_url"] = settings.MEDIA_URL
         context["login_url"] = settings.LOGIN_URL
         context["active"] = "users"
-        username = self.kwargs["username"] if "username" in self.kwargs.keys() else None
+        username = self.kwargs["username"] if "username" in self.kwargs.keys(
+        ) else None
         if username:
-            self.queryset = ShopUser.objects.filter(username__contains=username)
+            self.queryset = ShopUser.objects.filter(
+                username__contains=username)
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -161,7 +160,8 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         context["media_url"] = settings.MEDIA_URL
         context["login_url"] = settings.LOGIN_URL
         context["active"] = "users"
-        UserUpdateView.success_url = reverse_lazy("admin:user_view", args=[self.object.pk])
+        UserUpdateView.success_url = reverse_lazy(
+            "admin:user_view", args=[self.object.pk])
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -309,7 +309,8 @@ def category_edit(request, pk):
     edit_category = Category.objects.get(pk=pk)
     title = f"Категория {edit_category.title}"
     if request.method == "POST":
-        form = CategoryCreationForm(request.POST, request.FILES, instance=edit_category)
+        form = CategoryCreationForm(
+            request.POST, request.FILES, instance=edit_category)
         form.save()
         return HttpResponseRedirect(reverse("admin:category"))
 
@@ -342,15 +343,18 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cat_pk = self.kwargs["category"]
-        context["form"].fields["category"].initial = Category.objects.get(pk=cat_pk)
-        context["form"].fields["category"].queryset = Category.objects.filter(pk__gt=1, is_active=True)
+        context["form"].fields["category"].initial = Category.objects.get(
+            pk=cat_pk)
+        context["form"].fields["category"].queryset = Category.objects.filter(
+            pk__gt=1, is_active=True)
         for field in context["form"].fields.keys():
             context["form"].fields[field].widget.attrs["class"] = "form_field"
         context["category"] = cat_pk
         context["title"] = f"Добавить продукт"
         context["media_url"] = settings.MEDIA_URL
         context["active"] = "category"
-        ProductCreateView.success_url = reverse_lazy("admin:category_view", args=[cat_pk])
+        ProductCreateView.success_url = reverse_lazy(
+            "admin:category_view", args=[cat_pk])
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -385,11 +389,14 @@ class ProductEditView(LoginRequiredMixin, UpdateView):
         context["media_url"] = settings.MEDIA_URL
         context["active"] = "category"
         cat_pk = self.object.category_id
-        context["form"].fields["category"].initial = Category.objects.get(pk=cat_pk)
-        context["form"].fields["category"].queryset = Category.objects.filter(pk__gt=1, is_active=True)
+        context["form"].fields["category"].initial = Category.objects.get(
+            pk=cat_pk)
+        context["form"].fields["category"].queryset = Category.objects.filter(
+            pk__gt=1, is_active=True)
         for field in context["form"].fields.keys():
             context["form"].fields[field].widget.attrs["class"] = "form_field"
-        ProductEditView.success_url = reverse_lazy(f"admin:product", args=[self.kwargs["pk"]])
+        ProductEditView.success_url = reverse_lazy(
+            f"admin:product", args=[self.kwargs["pk"]])
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -412,7 +419,8 @@ class ProductDeleteNotView(LoginRequiredMixin, DeleteView):
         else:
             self.object.is_active = True
         self.object.save()
-        success_url = reverse_lazy("admin:category_view", args=[self.object.category_id])
+        success_url = reverse_lazy("admin:category_view", args=[
+                                   self.object.category_id])
         return HttpResponseRedirect(success_url)
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))

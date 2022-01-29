@@ -27,7 +27,8 @@ class ShopUserEditForm(UserChangeForm):
     возвращаем путь: каталог + имя файла, если нет - возвращаем None"""
 
     def clean_avatar(self):
-        allowed_types = ["image/jpg", "image/jpeg", "image/png", "image/svg", "image/bmp"]
+        allowed_types = ["image/jpg", "image/jpeg",
+                         "image/png", "image/svg", "image/bmp"]
         if ["avatar"] in self.changed_data:
             ava = self.cleaned_data["avatar"]
         else:
@@ -41,14 +42,23 @@ class ShopUserEditForm(UserChangeForm):
 
     class Meta:
         model = ShopUser
-        fields = ("username", "first_name", "last_name", "email", "age", "avatar")
+        fields = ("username", "first_name",
+                  "last_name", "email", "age", "avatar")
 
 
 class ShopUserRegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs) -> None:
         super(ShopUserRegisterForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs["class"] = "form-control"
+            field.widget.attrs["class"] = "form_field"
+
+    def save(self):
+        user = super(ShopUserRegisterForm, self).save()
+
+        user.is_active = False
+        user.get_auth_key()
+        user.save()
+        return user
 
     def clean_age(self):
         age = self.cleaned_data["age"]
@@ -56,6 +66,13 @@ class ShopUserRegisterForm(UserCreationForm):
             raise forms.ValidationError("Вы слишком молоды")
         return age
 
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if not email:
+            raise forms.ValidationError(
+                "Поле e-mail обязательно для заполнения")
+        return email
+
     class Meta:
         model = ShopUser
-        fields = ("username", "password1", "password2", "age")
+        fields = ("username", "email", "password1", "password2", "age")

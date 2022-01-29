@@ -1626,3 +1626,34 @@ td:first-child {
 .show > div {
 	margin: 20px 0;
 }
+
+.modal_bg {
+	display: none;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	background-color: rgba(100, 100, 100, 0.3);
+}
+.modal {
+	display: flex;
+	margin: 200px auto;
+	max-width: 600px;
+	min-height: 200px;
+	flex-direction: column;
+	background-color: #fff;
+	justify-content: space-around;
+	align-items: center;
+	border-radius: 20px;
+	box-shadow: 0 0 20px 5px rgba(100, 100, 100);
+}
+.modal_message {
+	margin: 20px;
+	text-align: center;
+	font-weight: normal;
+	font-size: 20px;
+}
+.show_reg {
+	display: block;
+}
