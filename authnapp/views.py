@@ -28,7 +28,8 @@ def login(request):
                 return HttpResponseRedirect(request.POST["next_page"])
             return HttpResponseRedirect(reverse("main"))
 
-    content = {"title": title, "login_form": login_form, "next_page": next_page}
+    content = {"title": title, "login_form": login_form,
+               "next_page": next_page}
     return render(request, "authnapp/login.html", content)
 
 
@@ -51,7 +52,8 @@ def register(request):
 
     if request.method == "POST":
         if request.META.get("HTTP_REFERER").find("admin/users_create/") != -1:
-            register_form = ShopUserAdminCreationForm(request.POST, request.FILES)
+            register_form = ShopUserAdminCreationForm(
+                request.POST, request.FILES)
         else:
             register_form = ShopUserRegisterForm(request.POST, request.FILES)
 
@@ -77,14 +79,16 @@ def register(request):
 def user_edit(request):
     title = "Профиль пользователя"
     if request.method == "POST":
-        edit_form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
+        edit_form = ShopUserEditForm(
+            request.POST, request.FILES, instance=request.user)
         if edit_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse("auth:profile"))
     else:
         edit_form = ShopUserEditForm(instance=request.user)
 
-    context = {"title": title, "edit_form": edit_form, "media_url": settings.MEDIA_URL}
+    context = {"title": title, "edit_form": edit_form,
+               "media_url": settings.MEDIA_URL}
     return render(request, "authnapp/edit.html", context)
 
 
@@ -106,7 +110,8 @@ def verify(request, user_id, user_auth_key):
     if user.auth_key == user_auth_key and not user.is_activation_key_expired():
         user.is_active = True
         user.save()
-        auth.login(request, user)
+        auth.login(request, user,
+                   backend="django.contrib.auth.backends.ModelBackend")
         link = reverse("main")
 
     # Пока закооментировал вариант истекшим ключем, так как очень не хватает времени
@@ -116,7 +121,8 @@ def verify(request, user_id, user_auth_key):
     #    user.get_auth_key()
     #    link = reverse('auth:resend_verify_link', args=[user.id])
 
-    content = {"title": title, "media_url": settings.MEDIA_URL, "link": link, "user": user}
+    content = {"title": title, "media_url": settings.MEDIA_URL,
+               "link": link, "user": user}
     return render(request, "authnapp/verify.html", content)
 
 

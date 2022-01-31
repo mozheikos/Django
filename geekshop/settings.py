@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     "mainapp",
     "authnapp",
     "basketapp",
-    "adminapp"
+    "adminapp",
+    "social_django",
 ]
 
 MIDDLEWARE = [

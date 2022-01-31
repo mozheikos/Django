@@ -1657,3 +1657,6 @@ td:first-child {
 .show_reg {
 	display: block;
 }
+.github_button {
+	background-color: rgb(97, 93, 93);
+}
