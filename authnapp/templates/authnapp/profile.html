@@ -1,6 +1,6 @@
 {% extends 'authnapp/base.html' %}
 {% load static %}
-
+{% load my_tags %}
 {% block content %}
 
 
@@ -14,8 +14,12 @@
     <ul>
         <li class="field"><b>Имя:</b> {{user.first_name}}</li>
         <li class="field"><b>Фамилия:</b> {{user.last_name}}</li>
-        <li class="field"><b>Возраст:</b> {{user.age}}</li>
+        <li class="field"><b>Возраст:</b> {{user.age|age}}</li>
         <li class="field"><b>Аватар:</b> <img src="{{ media_url }}{{user.avatar}}" alt=""></li>
+        <li class="field"><b>Пол:</b> {{user.shopuserprofile.gender}}</li>
+        <li class="field"><b>Обо мне:</b> {{user.shopuserprofile.aboutMe}}</li>
+        <li class="field"><b>Интересы:</b> {{user.shopuserprofile.interests}}</li>
+        <li class="field"><b>Теги:</b> {{user.shopuserprofile.tagline}}</li>
     </ul>
 </div>
 <a href="{% url 'auth:user_edit' %}" class='edit'>Редакторовать профиль</a>

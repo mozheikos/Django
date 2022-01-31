@@ -1,7 +1,7 @@
-from django.contrib.auth import forms, models
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm, UserCreationForm
+from django import forms
 
-from .models import ShopUser
+from .models import ShopUser, ShopUserProfile
 
 
 class ShopUserLoginForm(AuthenticationForm):
@@ -27,7 +27,8 @@ class ShopUserEditForm(UserChangeForm):
     возвращаем путь: каталог + имя файла, если нет - возвращаем None"""
 
     def clean_avatar(self):
-        allowed_types = ["image/jpg", "image/jpeg", "image/png", "image/svg", "image/bmp"]
+        allowed_types = ["image/jpg", "image/jpeg",
+                         "image/png", "image/svg", "image/bmp"]
         if ["avatar"] in self.changed_data:
             ava = self.cleaned_data["avatar"]
         else:
@@ -41,7 +42,8 @@ class ShopUserEditForm(UserChangeForm):
 
     class Meta:
         model = ShopUser
-        fields = ("username", "first_name", "last_name", "email", "age", "avatar")
+        fields = ("username", "first_name",
+                  "last_name", "email", "age", "avatar")
 
 
 class ShopUserRegisterForm(UserCreationForm):
@@ -67,9 +69,21 @@ class ShopUserRegisterForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data["email"]
         if not email:
-            raise forms.ValidationError("Поле e-mail обязательно для заполнения")
+            raise forms.ValidationError(
+                "Поле e-mail обязательно для заполнения")
         return email
 
     class Meta:
         model = ShopUser
         fields = ("username", "email", "password1", "password2", "age")
+
+
+class ShopUserProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = ShopUserProfile
+        fields = ("tagline", "aboutMe", "interests", "gender")
+
+    def __init__(self, *args, **kwargs):
+        super(ShopUserProfileEditForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form_field"
