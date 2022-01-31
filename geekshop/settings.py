@@ -69,6 +69,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "mainapp.context_processors.basket_processor",
             ],
         },
     },
@@ -138,3 +139,28 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_URL = "authnapp:login"
+
+# email settings
+DOMAIN_NAME = "http://localhost:8000"
+
+# Read about sending email:
+#   https://docs.djangoproject.com/en/2.2/topics/email/
+
+# Full list of email settings:
+#   https://docs.djangoproject.com/en/2.2/ref/settings/#email
+EMAIL_HOST = "localhost"
+EMAIL_PORT = "25"
+
+EMAIL_USE_SSL = False
+# If server support TLS:
+# EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = "django@geekshop.local"
+EMAIL_HOST_PASSWORD = "geekshop"
+# For debugging: python -m smtpd -n -c DebuggingServer localhost:25
+# EMAIL_HOST_USER = None
+# EMAIL_HOST_PASSWORD = None
+
+# Email as files
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = "tmp/email-messages/"

@@ -1,6 +1,3 @@
-from dataclasses import fields
-from webbrowser import get
-
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -289,6 +286,7 @@ def create_category(request):
 
 @user_passes_test(lambda x: x.is_staff)
 def category_view(request, pk):
+    pk = int(pk)
     title = "Категория"
     if pk == 1:
         products = Product.objects.all()
@@ -306,6 +304,7 @@ def category_view(request, pk):
 
 @user_passes_test(lambda x: x.is_staff)
 def category_edit(request, pk):
+    pk = int(pk)
     edit_category = Category.objects.get(pk=pk)
     title = f"Категория {edit_category.title}"
     if request.method == "POST":
@@ -326,6 +325,7 @@ def category_edit(request, pk):
 
 @user_passes_test(lambda x: x.is_staff)
 def category_delete(request, pk):
+    pk = int(pk)
     category_to_delete = Category.objects.get(pk=pk)
     category_to_delete.is_active = False if category_to_delete.is_active else True
     category_to_delete.save()

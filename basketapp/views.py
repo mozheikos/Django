@@ -10,18 +10,10 @@ from mainapp.models import Product
 @login_required
 def basket(request):
     title = f"Корзина пользователя: {request.user.username}"
-    basket_items = []
-    basket_count = []
-    basket_cost = []
-    basket_items = Basket.objects.filter(user=request.user)
-    basket_count = Basket.product_count(request.user)
-    basket_cost = Basket.total_cost(request.user)
+
     back = request.META.get("HTTP_REFERER")
     content = {
         "title": title,
-        "basket_items": basket_items,
-        "basket_count": basket_count,
-        "basket_cost": basket_cost,
         "media_url": settings.MEDIA_URL,
         "back": back,
     }
@@ -30,6 +22,7 @@ def basket(request):
 
 @login_required
 def add_to_basket(request, category_pk, pk):
+    pk = int(pk)
     """Так как в моем случае добавление в корзину реализовано через форму, для
     того, чтобы можно было добавить не одну, а сразу несколько единиц товара,
     в случае редиректа из login-формы прилетает GET-запрос и все ломается. Думал,
@@ -61,11 +54,14 @@ def add_to_basket(request, category_pk, pk):
 
 
 def remove_from_basket(request, pk):
+    pk = int(pk)
     Basket.objects.get(pk=pk).delete()
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
 def edit_quantity(request, pk, quantity):
+    pk = int(pk)
+    quantity = int(quantity)
     edit_elem = Basket.objects.get(pk=int(pk))
     edit_elem.quantity = int(quantity)
     edit_elem.save()

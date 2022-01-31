@@ -6,9 +6,9 @@
 <form class="form-horizontal" action="{% url 'auth:user_edit' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ edit_form.as_p }}
-    <input class="form-control" type="submit" value="сохранить">
+    <input class="adminapp_button" type="submit" value="сохранить">
 </form>
-<button class="btn btn-round form-control last">
+<button class="btn btn-round form-control last adminapp_button">
     <a href="{% url 'main' %}" class="">
         на главную
     </a>
