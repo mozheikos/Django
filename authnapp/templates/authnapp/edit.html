@@ -6,13 +6,11 @@
 <form class="form-horizontal" action="{% url 'auth:user_edit' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ edit_form.as_p }}
+    {{ profile_form.as_p }}
     <input class="adminapp_button" type="submit" value="сохранить">
 </form>
-<button class="btn btn-round form-control last adminapp_button">
-    <a href="{% url 'main' %}" class="">
-        на главную
-    </a>
-</button>
+<a href="{% url 'main' %}" class="adminapp_button">
+    на главную</a>
 
 {% if user.avatar %}
 <div class="user_avatar"><img src="{{ media_url }}{{ user.avatar }}"></div>

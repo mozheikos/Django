@@ -1,7 +1,7 @@
-from django.contrib.auth import forms, models
+from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm, UserCreationForm
 
-from .models import ShopUser
+from .models import ShopUser, ShopUserProfile
 
 
 class ShopUserLoginForm(AuthenticationForm):
@@ -73,3 +73,14 @@ class ShopUserRegisterForm(UserCreationForm):
     class Meta:
         model = ShopUser
         fields = ("username", "email", "password1", "password2", "age")
+
+
+class ShopUserProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = ShopUserProfile
+        fields = ("tagline", "aboutMe", "interests", "gender")
+
+    def __init__(self, *args, **kwargs):
+        super(ShopUserProfileEditForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form_field"

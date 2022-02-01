@@ -1157,11 +1157,7 @@ td:first-child {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin: auto;
-}
-
-.field:last-child {
-	margin-top: 30px;
+	margin: 10px auto;
 }
 
 .profile_fields {
@@ -1656,4 +1652,7 @@ td:first-child {
 }
 .show_reg {
 	display: block;
+}
+.github_button {
+	background-color: rgb(97, 93, 93);
 }

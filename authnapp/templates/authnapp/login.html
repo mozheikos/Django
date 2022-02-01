@@ -16,5 +16,13 @@
     <br>
     <input class="adminapp_button" type="submit" value="войти">
 </form>
+<a href="{% url 'auth:register' %}" class="adminapp_button" role="button">
+    зарегистрироваться
+</a>
+<a href="{% url 'social:begin' 'github' %}?next=/" class="adminapp_button github_button" role="button">
+    Вход через <i class="fab fa-github" aria-hidden="true"></i>
+</a>
+<a href="{% url 'social:begin' 'vk-oauth2' %}?next=/" class="adminapp_button" role="button">
+    Вход через <i class="fab fa-vk"></i></a>
 
 {% endblock content %}
