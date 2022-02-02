@@ -27,6 +27,9 @@
         <li class="admin_menu_item"><a href="{% url 'admin:category' %}"
                 class="admin_menu_link {% if active == 'category' %}active{% endif %}">Каталог</a>
         </li>
+        <li class="admin_menu_item"><a href="{% url 'admin:o_view' %}"
+                class="admin_menu_link {% if active == 'orders' %}active{% endif %}">Заказы</a>
+        </li>
         <li class="admin_menu_item"><a href="{% url 'auth:logout' %}" class="admin_menu_link">Выход</a></li>
     </ul>
 

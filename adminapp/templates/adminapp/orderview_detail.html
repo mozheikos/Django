@@ -1,0 +1,57 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="user_profile_container">
+    <div class="user_profile_field">
+        <span class="field">ID</span>
+        <span class="value">{{ object.pk }}</span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Пользователь</span>
+        <span class="value">{{ object.user.username }}</span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Создан</span>
+        <span class="value">{{ object.created }}</span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Статус</span>
+        <span class="value">{{ object.get_status_display }}</span>
+    </div>
+    <h2 class="admin_order_h2">Товары заказа:</h2>
+    {% for item in order_items %}
+    <hr>
+    <div class="user_profile_field">
+        <span class="field">Изображение</span>
+        <span class="value"><img src="{{media_url}}{{item.product.image}}" alt="{{item.product.name}}"
+                style="width: 120px; height: 120px;"></span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Название</span>
+        <span class="value">{{ item.product.name }}</span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Цена</span>
+        <span class="value">{{item.product.price}}</span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Количество</span>
+        <span class="value">{{ item.quantity }}</span>
+    </div>
+    <div class="user_profile_field">
+        <span class="field">Стоимость</span>
+        <span class="value">{{ item.get_product_cost}}</span>
+    </div>
+    <hr>
+    {% endfor %}
+
+    <div class="user_profile_links">
+        <a class="adminapp_button" href="{% url 'admin:o_view' %}">Назад</a>
+        {%comment%}
+        <a class="adminapp_button" href="{% url 'admin:o_update' object.pk %}">Редактировать</a>
+        {%endcomment%}
+    </div>
+</div>
+
+{% endblock content %}
