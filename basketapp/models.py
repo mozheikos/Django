@@ -7,10 +7,13 @@ from mainapp.models import Product
 
 class Basket(models.Model):
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="basket")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, related_name="basket")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveSmallIntegerField(verbose_name="количество", default=0)
-    add_datetime = models.DateTimeField(verbose_name="дата добавления", auto_now_add=True)
+    quantity = models.PositiveSmallIntegerField(
+        verbose_name="количество", default=0)
+    add_datetime = models.DateTimeField(
+        verbose_name="дата добавления", auto_now_add=True)
 
     @property
     def product_cost(self):
@@ -31,3 +34,7 @@ class Basket(models.Model):
         for item in products:
             cls._total_cost += item.product_cost
         return cls._total_cost
+
+    @staticmethod
+    def get_items(user):
+        return Basket.objects.filter(user=user).order_by("product__category")
