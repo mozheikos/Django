@@ -13,7 +13,11 @@
                         контакты</a></li>
         <li>
                 {% if user.is_authenticated %}
-                <a href="{% url 'auth:profile' %}"><span class="username">{{user.username}}</span></a>
+                <a id="username" href=""><span class="username">{{user.username}}</span></a>
+                <div id="dropdown" class="dropdown">
+                        <a href="{% url 'auth:profile' %}" class="dorpdown_item">Профиль</a>
+                        <a href="#" class="dorpdown_item">Заказы</a>
+                </div>
                 {% else %}
                 <a href="{% url 'auth:register' %}">регистрация</a>
                 <a href="{% url 'auth:login' %}">войти</a>

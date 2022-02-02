@@ -1656,3 +1656,20 @@ td:first-child {
 .github_button {
 	background-color: rgb(97, 93, 93);
 }
+.dropdown {
+	display: none;
+	flex-direction: column;
+	position: absolute;
+	margin-top: 20px;
+	border: #000 1px solid;
+	border-radius: 10px;
+	padding: 10px;
+}
+.dropdown_item {
+	display: inline-block;
+}
+.dropdown_show {
+	display: flex;
+	z-index: 1;
+	background-color: #eeeeee;
+}
