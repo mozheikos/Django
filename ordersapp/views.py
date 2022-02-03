@@ -39,7 +39,6 @@ class OrderItemsCreate(CreateView):
                 for num, form in enumerate(formset.forms):
                     form.initial["product"] = basket_items[num].product
                     form.initial["quantity"] = basket_items[num].quantity
-                    form.fields['product'].disabled = True
             else:
                 formset = OrderFormSet()
 
@@ -89,8 +88,6 @@ class OrderItemsUpdate(UpdateView):
                 self.request.POST, instance=self.object)
         else:
             data["orderitems"] = OrderFormSet(instance=self.object)
-        for item in data["orderitems"].forms:
-            item.fields['product'].disabled = True
         return data
 
     def form_valid(self, form):

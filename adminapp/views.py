@@ -467,3 +467,22 @@ class OrderView(LoginRequiredMixin, DetailView):
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+
+class OrderUpdate(LoginRequiredMixin, UpdateView):
+    model = Order
+    template_name = "adminapp/order_update_form.html"
+    fields = "__all__"
+
+    def get_form_class(self):
+        form = super(OrderUpdate, self).get_form_class()
+        for field in form.base_fields.values():
+            field.widget.attrs['class'] = "form_field"
+        return form
+
+    def get_success_url(self):
+        return reverse_lazy("admin:o_detail", args=[self.object.pk])
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)

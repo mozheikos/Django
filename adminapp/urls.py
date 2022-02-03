@@ -44,6 +44,6 @@ urlpatterns = [
     re_path(r"^o_view/$", adminapp.Orders.as_view(), name="o_view"),
     re_path(r"^o_detail/(?P<pk>\d+)/$",
             adminapp.OrderView.as_view(), name="o_detail"),
-    # re_path(r"^o_update/(?P<pk>\d+)/$",
-    #        adminapp.OrderUpdate.as_view(), name="o_update"),
+    re_path(r"^o_update/(?P<pk>\d+)/$",
+            adminapp.OrderUpdate.as_view(), name="o_update"),
 ]
