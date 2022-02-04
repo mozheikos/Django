@@ -1,6 +1,7 @@
 from tabnanny import verbose
-from django.db import models
+
 from django.conf import settings
+from django.db import models
 
 from mainapp.models import Product
 
@@ -21,14 +22,10 @@ class Order(models.Model):
         (READY, "готов к выдаче"),
         (CANCEL, "отменен"),
     )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    created = models.DateTimeField(
-        verbose_name="Дата создания", auto_now_add=True)
-    updated = models.DateTimeField(
-        verbose_name="Дата обовления", auto_now=True)
-    status = models.CharField(verbose_name="Статус заказа",
-                              max_length=3, choices=ORDER_STATUS_CHOICES, default=FORMING)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
+    updated = models.DateTimeField(verbose_name="Дата обовления", auto_now=True)
+    status = models.CharField(verbose_name="Статус заказа", max_length=3, choices=ORDER_STATUS_CHOICES, default=FORMING)
     is_active = models.BooleanField(verbose_name="Активен", default=True)
 
     class Meta:
@@ -62,12 +59,9 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(
-        Order, related_name="orderitems", on_delete=models.CASCADE)
-    product = models.ForeignKey(
-        Product, verbose_name="продукт", on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(
-        verbose_name="количество", default=0)
+    order = models.ForeignKey(Order, related_name="orderitems", on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name="продукт", on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(verbose_name="количество", default=0)
 
     def get_product_cost(self):
         return self.product.price * self.quantity

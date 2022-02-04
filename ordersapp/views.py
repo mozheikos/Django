@@ -1,4 +1,5 @@
 from dataclasses import fields
+
 from django.db import transaction
 from django.forms import inlineformset_factory
 from django.shortcuts import HttpResponseRedirect, get_object_or_404
@@ -25,16 +26,14 @@ class OrderItemsCreate(CreateView):
 
     def get_context_data(self, **kwargs):
         data = super(OrderItemsCreate, self).get_context_data(**kwargs)
-        OrderFormSet = inlineformset_factory(
-            Order, OrderItem, form=OrderItemForm, extra=0)
+        OrderFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=0)
 
         if self.request.POST:
             formset = OrderFormSet(self.request.POST)
         else:
             basket_items = Basket.get_items(self.request.user)
             if len(basket_items):
-                OrderFormSet = inlineformset_factory(
-                    Order, OrderItem, form=OrderItemForm, extra=len(basket_items))
+                OrderFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=len(basket_items))
                 formset = OrderFormSet()
                 for num, form in enumerate(formset.forms):
                     form.initial["product"] = basket_items[num].product
@@ -81,11 +80,9 @@ class OrderItemsUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         data = super(OrderItemsUpdate, self).get_context_data(**kwargs)
-        OrderFormSet = inlineformset_factory(
-            Order, OrderItem, form=OrderItemForm, extra=0)
+        OrderFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=0)
         if self.request.POST:
-            data["orderitems"] = OrderFormSet(
-                self.request.POST, instance=self.object)
+            data["orderitems"] = OrderFormSet(self.request.POST, instance=self.object)
         else:
             data["orderitems"] = OrderFormSet(instance=self.object)
         return data
