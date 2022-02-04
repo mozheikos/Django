@@ -27,7 +27,7 @@
     <div class="order">
         <a href="{% url 'main' %}" class="basket_back">На главную</a>
         <a href="{{ back }}" class="basket_back">Продолжить покупки</a>
-        <a href="{% url 'order:orders_list' %}" class="basket_back">Оформить заказ</a>
+        <a href="{% url 'order:order_create' %}" class="basket_back">Оформить заказ</a>
     </div>
 </ul>
 {% else %}

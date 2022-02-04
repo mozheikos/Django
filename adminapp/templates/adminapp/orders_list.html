@@ -9,12 +9,15 @@
     <li class="username_ord">USERNAME</li>
 </ul>
 {% for order in object_list %}
-<ul class="users_header">
+<ul class="users_header {% if not order.is_active %}not_active{% endif %}">
     <li class="id">{{order.id}}</li>
     <li class="data">{{order.created}}</li>
     <li class="status">{{order.get_status_display}}</li>
     <li class="username_ord">{{order.user.username}}</li>
     <li class="category_actions"><a class="adminapp_button" href="{% url 'admin:o_detail' order.pk %}">Подробнее</a>
+        {%if order.is_active%}
+        <a class="adminapp_button" href="{% url 'admin:o_delete' order.pk %}">Удалить</a>
+        {%endif%}
     </li>
 </ul>
 {% endfor %}

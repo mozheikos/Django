@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
 from adminapp.forms import CategoryCreationForm, ShopUserAdminCreationForm
@@ -482,6 +482,16 @@ class OrderUpdate(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("admin:o_detail", args=[self.object.pk])
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class OrderDelete(LoginRequiredMixin, DeleteView):
+    model = Order
+    template_name = 'adminapp/order_delete.html'
+    success_url = reverse_lazy("admin:o_view")
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def dispatch(self, *args, **kwargs):
