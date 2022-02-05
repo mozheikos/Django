@@ -1,0 +1,14 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="user_profile_container">
+    <form class="form-horizontal" action="{% url 'admin:o_delete' object.pk %}" method="POST"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3>Действительно удалить заказ№ {{object.pk}} на сумму {{object.get_total_cost}}?</h3>
+        <a class="adminapp_button" href="{% url 'admin:o_view' %}">Назад</a>
+        <input class="adminapp_button" type="submit" value="Удалить">
+    </form>
+</div>
+{% endblock content %}

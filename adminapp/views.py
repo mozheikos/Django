@@ -1,3 +1,5 @@
+from re import template
+
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -6,13 +8,14 @@ from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views.generic import CreateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
 from adminapp.forms import CategoryCreationForm, ShopUserAdminCreationForm
 from authnapp.models import ShopUser
 from mainapp.models import Category, Product
+from ordersapp.models import Order, OrderItem
 
 
 @user_passes_test(lambda x: x.is_staff)
@@ -414,6 +417,72 @@ class ProductDeleteNotView(LoginRequiredMixin, DeleteView):
         self.object.save()
         success_url = reverse_lazy("admin:category_view", args=[self.object.category_id])
         return HttpResponseRedirect(success_url)
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+# oreders CRUD
+
+
+class Orders(LoginRequiredMixin, ListView):
+    model = Order
+    template_name = "adminapp/orders_list.html"
+    ordering = ("-created",)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["active"] = "orders"
+        context["title"] = "заказы"
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class OrderView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = "adminapp/orderview_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderView, self).get_context_data(**kwargs)
+        context["active"] = "orders"
+        context["media_url"] = settings.MEDIA_URL
+        context["title"] = f"Заказ №{self.object.pk}"
+        order_items = OrderItem.objects.filter(order_id=self.object.pk)
+        context["order_items"] = order_items
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class OrderUpdate(LoginRequiredMixin, UpdateView):
+    model = Order
+    template_name = "adminapp/order_update_form.html"
+    fields = "__all__"
+
+    def get_form_class(self):
+        form = super(OrderUpdate, self).get_form_class()
+        for field in form.base_fields.values():
+            field.widget.attrs["class"] = "form_field"
+        return form
+
+    def get_success_url(self):
+        return reverse_lazy("admin:o_detail", args=[self.object.pk])
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class OrderDelete(LoginRequiredMixin, DeleteView):
+    model = Order
+    template_name = "adminapp/order_delete.html"
+    success_url = reverse_lazy("admin:o_view")
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def dispatch(self, *args, **kwargs):

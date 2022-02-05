@@ -31,3 +31,7 @@ class Basket(models.Model):
         for item in products:
             cls._total_cost += item.product_cost
         return cls._total_cost
+
+    @staticmethod
+    def get_items(user):
+        return Basket.objects.filter(user_id=user.id).order_by("product__category")
