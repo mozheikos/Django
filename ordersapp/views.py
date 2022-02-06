@@ -1,6 +1,8 @@
 from dataclasses import fields
 
 from django.db import transaction
+from django.dispatch import receiver
+from django.db.models.signals import pre_delete, pre_save
 from django.forms import inlineformset_factory
 from django.shortcuts import HttpResponseRedirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -121,3 +123,20 @@ def order_forming_complete(request, pk):
     order.save()
 
     return HttpResponseRedirect(reverse("ordersapp:orders_list"))
+
+
+# I update product.count only by OrderItem signal, because adding product to basket
+# is not a purchase
+@receiver(pre_save, sender=OrderItem)
+def product_count_update_save(instance, sender, **kwargs):
+    quantity_delta = instance.quantity
+    if instance.pk:
+        quantity_delta -= sender.get_item(instance.pk).quantity
+    instance.product.count -= quantity_delta
+    instance.product.save()
+
+
+@receiver(pre_delete, sender=OrderItem)
+def product_count_update_delete(instance, sender, **kwargs):
+    instance.product.count += instance.quantity
+    instance.product.save()
