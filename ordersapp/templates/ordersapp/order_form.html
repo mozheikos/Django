@@ -16,10 +16,10 @@
 </p>
 <p>
 <div class="order_form">
-    <form action="" method="post">
+    <form action="" method="post" id="form">
         {% csrf_token %}
         {{ form.as_p }}
-        <table class="table">
+        <table class="table order_table">
             {{ orderitems.management_form }}
             {% for form in orderitems.forms %}
             {% if forloop.first %}

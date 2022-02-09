@@ -2,7 +2,7 @@ from dataclasses import fields
 
 from django.db import transaction
 from django.dispatch import receiver
-from django.db.models.signals import pre_delete, pre_save
+from django.db.models.signals import pre_delete, pre_save, post_save
 from django.forms import inlineformset_factory
 from django.shortcuts import HttpResponseRedirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -145,3 +145,13 @@ def product_count_update_save(instance, sender, **kwargs):
 def product_count_update_delete(instance, sender, **kwargs):
     instance.product.count += instance.quantity
     instance.product.save()
+
+# Deleting orderitem if quantity = 0
+
+
+@receiver(post_save, sender=OrderItem)
+def del_zero_quant(instance, sender, **kwargs):
+    product = OrderItem.objects.filter(pk=instance.pk)
+    if len(product):
+        if int(instance.quantity) == 0:
+            sender.get_item(instance.pk).delete()

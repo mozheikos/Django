@@ -1,112 +1,62 @@
-window.onload = function () {
-    let _quantity, _price, orderitem_num, delta_quantity, orderitem_quantity, delta_cost;
-    let quantity_arr = [];
-    let price_arr = [];
+function getProductQuantity(row) {
+    let product_quantity = Number.parseInt(row.querySelector('input[type="number"]').value);
+    return product_quantity;
+}
 
-    let TOTAL_FORMS = Number.parseInt($('input[name="orderitems-TOTAL_FORMS"]').val());
-    let order_total_quantity = Number.parseInt($('.order_total_quantity').text()) || 0;
-    let order_total_cost = Number.parseFloat($('.order_total_cost').text().replace(',', '.')) || 0;
+function getProductPrice(row) {
+    let product_price = Number.parseFloat(row.querySelector('SPAN').innerText.replace(',', '.'));
+    return product_price;
+}
 
-    for (let i = 0; i < TOTAL_FORMS; i++) {
-        _quantity = Number.parseInt($('input[name="orderitems-' + i + '-quantity"]').val());
-        _price = Number.parseFloat($('.orderitems-' + i + '-price').text().replace(',', '.'));
-        quantity_arr[i] = _quantity;
-        if (_price) {
-            price_arr[i] = _price;
-        } else {
-            price_arr[i] = 0;
-        } //end if
-    } //end for
+function setOrderTotal() {
+    let order_total_quant = document.querySelector('.order_total_quantity');
+    let order_total_cost = document.querySelector('.order_total_cost');
 
-    if (!order_total_quantity) {
-        for (let i = 0; i < TOTAL_FORMS; i++) {
-            order_total_quantity += quantity_arr[i];
-            order_total_cost += quantity_arr[i] * price_arr[i];
-        } //end for
-        $('.order_total_quantity').html(order_total_quantity.toString());
-        $('.order_total_cost').html(Number(order_total_cost.toFixed(2)).toString());
-    }//end if
+    let rows = document.querySelectorAll('.formset_row');
+    let total_quant = 0;
+    let total_cost = 0;
 
-    /*$('.order_form').on('change', 'input[type="number"]', function () {
-        let target = event.target;
-        orderitem_num = Number.parseInt(target.name.replace('orderitems-', '').replace('-quantity', ''));
-        if (price_arr[orderitem_num]) {
-            orderitem_quantity = Number.parseInt(target.value);
-            delta_quantity = orderitem_quantity - quantity_arr[orderitem_num];
-            quantity_arr[orderitem_num] = orderitem_quantity;
-            orderSummaryUpdate(price_arr[orderitem_num], delta_quantity);
-        } //end if
-    });*/ // end order_form event listener quantity*/
+    for (let item of rows) {
+        let _quant = getProductQuantity(item);
+        total_quant += _quant;
+        total_cost += getProductPrice(item) * _quant;
+    };
+    order_total_quant.innerText = total_quant.toString();
+    order_total_cost.innerText = total_cost.toFixed(2).toString();
 
-    document.addEventListener('input', (event) => {
-        if (event.target.type == "number") {
-            let target = event.target;
-            // Добавил проверку target.value, иначе джанго не удаляет строку из заказа, а просто ставит количество = 0
-            let _delete = target.parentElement.parentElement.querySelector('INPUT[type="checkbox"]');
-            if (target.value == 0) {
-                _delete.checked = true;
-            } else {
-                _delete.checked = false;
+}
+
+function deleteOrderItem(row) {
+    let init_forms = Number.parseInt(document.querySelector('input[name="orderitems-INITIAL_FORMS"]').value);
+    let row_number = Number.parseInt(row[0].querySelector('input[type="number"]').name.replace('orderitems-', '').replace('-quantity', ''));
+    let total_forms = document.querySelector('input[name="orderitems-TOTAL_FORMS"]');
+    // this check needed for correct work when deleting some form
+    if (row_number < init_forms) {
+        let _total_f = +total_forms.value;
+        _total_f += 1;
+        total_forms.value = _total_f;
+    }
+    // set orderitem quantity 0 for coorrect working total_order_information
+    _val = row[0].querySelector('input[type="number"]');
+    _val.value = 0;
+    setOrderTotal();
+}
+
+window.addEventListener('load', () => {
+    let order_form = document.querySelector('.order_table');
+    if (order_form) {
+        order_form.addEventListener('input', (event) => {
+            if (event.target.type == "number") {
+                setOrderTotal();
             }
-
-            orderitem_num = Number.parseInt(target.name.replace('orderitems-', '').replace('-quantity', ''));
-            if (price_arr[orderitem_num]) {
-                orderitem_quantity = Number.parseInt(target.value);
-                delta_quantity = orderitem_quantity - quantity_arr[orderitem_num];
-                quantity_arr[orderitem_num] = orderitem_quantity;
-                orderSummaryUpdate(price_arr[orderitem_num], delta_quantity);
-            } //end if
-        }
-
-    });
-
-    $('.order_form').on('click', 'input[type="checkbox"]', function () {
-        let target = event.target;
-        orderitem_num = Number.parseInt(target.name.replace('orderitems-', '').replace('-DELETE', ''));
-        if (target.checked) {
-            delta_quantity = -quantity_arr[orderitem_num];
-        } else {
-            delta_quantity = quantity_arr[orderitem_num];
-        } //end if
-        orderSummaryUpdate(price_arr[orderitem_num], delta_quantity);
-    }); // end event listener delete
-
-
-
-    /*function deleteOrderItem(row) {
-        let target_name = row.querySelector('input[type="number"]').name;
-        orderitem_num = Number.parseInt(target_name.replace('orderitems-', '').replace('-quantity', ''));
-        delta_quantity = -quantity_arr[orderitem_num];
-        orderSummaryUpdate(price_arr[orderitem_num], delta_quantity);
-    } // end delete func
-
-    $('.order_form select').change(function () {
-        var target = event.target;
-        console.log(target);
-    });*/
-
-    function orderSummaryUpdate(orderitem_price, delta_quantity) {
-        delta_cost = orderitem_price * delta_quantity;
-
-        order_total_cost = Number((order_total_cost + delta_cost).toFixed(2));
-        order_total_quantity = order_total_quantity + delta_quantity;
-
-        $('.order_total_cost').html(order_total_cost.toString());
-        $('.order_total_quantity').html(order_total_quantity.toString());
-    } //end render func
-
-
-    /* Код я написал, но Бибилиотеку я отключил. Некорректно себя ведет:
-    1. При добавлении строки в форму она копирует предыдущую, цена не правильная, в общем криво
-    2. Удаление фактически не работает, так как сама библиотека при нажатии на кнопку просто
-    скрывает строку, в джанго не приходит инфа об удалении. Знаю как поправить, но это в код
-    библиотеки надо лезть, не стал
-    3. Реально нормально работает только на изменение количества
+        });
+    };
 
     $('.formset_row').formset({
         addText: 'добавить продукт',
         deleteText: 'удалить',
         prefix: 'orderitems',
+
         removed: deleteOrderItem
-    });*/
-}; //end onload func
+    });
+});

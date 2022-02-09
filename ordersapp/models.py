@@ -62,6 +62,12 @@ class Order(models.Model):
         self.status = self.CANCEL
         self.save()
 
+    # def save(self):
+     #   for item in self.orderitems.select_related():
+      #      if int(item.quantity) == 0:
+       #         item.delete()
+        # super().save()
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(
