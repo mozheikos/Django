@@ -26,6 +26,17 @@ function setOrderTotal() {
 
 }
 
+function addOrderItem() {
+    let new_item = $('tr.formset_row').last()[0];
+    let price = new_item.querySelector('SPAN');
+    let select = new_item.querySelector('SELECT');
+    let quant = new_item.querySelector('input[type="number"]');
+    select.value = 0;
+    price.innerText = 0;
+    quant.value = 0;
+    quant.disabled = true;
+}
+
 function deleteOrderItem(row) {
     let init_forms = Number.parseInt(document.querySelector('input[name="orderitems-INITIAL_FORMS"]').value);
     let row_number = Number.parseInt(row[0].querySelector('input[type="number"]').name.replace('orderitems-', '').replace('-quantity', ''));
@@ -49,6 +60,25 @@ window.addEventListener('load', () => {
             if (event.target.type == "number") {
                 setOrderTotal();
             }
+            if (event.target.type == "select-one") {
+                let pk = event.target.value;
+                let row = event.target.parentElement.parentElement;
+                let quant = row.querySelector('input[type="number"]');
+                let price = row.querySelector('SPAN');
+                if (pk != 0) {
+                    quant.disabled = false;
+                } else {
+                    quant.disabled = true;
+                }
+                console.log(pk);
+                $.ajax({
+                    url: `/order/get_price/${pk}/`,
+                    success: (data) => {
+                        price.innerText = data.price;
+                        setOrderTotal();
+                    }
+                });
+            }
         });
     };
 
@@ -56,7 +86,7 @@ window.addEventListener('load', () => {
         addText: 'добавить продукт',
         deleteText: 'удалить',
         prefix: 'orderitems',
-
+        added: addOrderItem,
         removed: deleteOrderItem
     });
 });
