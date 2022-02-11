@@ -1,7 +1,10 @@
 from dataclasses import fields
 
 from django.db import transaction
+from django.dispatch import receiver
+from django.db.models.signals import pre_delete, pre_save, post_save
 from django.forms import inlineformset_factory
+from django.http import JsonResponse
 from django.shortcuts import HttpResponseRedirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
@@ -10,6 +13,7 @@ from django.views.generic.detail import DetailView
 from basketapp.models import Basket
 from ordersapp.forms import OrderItemForm
 from ordersapp.models import Order, OrderItem
+from mainapp.models import Product
 
 
 class OrderList(ListView):
@@ -40,6 +44,7 @@ class OrderItemsCreate(CreateView):
                 for num, form in enumerate(formset.forms):
                     form.initial["product"] = basket_items[num].product
                     form.initial["quantity"] = basket_items[num].quantity
+                    form.initial["price"] = basket_items[num].product.price
             else:
                 OrderFormSet = inlineformset_factory(
                     Order, OrderItem, form=OrderItemForm, extra=1)
@@ -90,7 +95,11 @@ class OrderItemsUpdate(UpdateView):
             data["orderitems"] = OrderFormSet(
                 self.request.POST, instance=self.object)
         else:
-            data["orderitems"] = OrderFormSet(instance=self.object)
+            formset = OrderFormSet(instance=self.object)
+            for form in formset.forms:
+                if form.instance.pk:
+                    form.initial["price"] = form.instance.product.price
+            data["orderitems"] = formset
         return data
 
     def form_valid(self, form):
@@ -121,3 +130,41 @@ def order_forming_complete(request, pk):
     order.save()
 
     return HttpResponseRedirect(reverse("ordersapp:orders_list"))
+
+# controller for get product price with ajax
+
+
+def get_price(request, pk):
+    pk = int(pk)
+    if pk:
+        price = Product.objects.get(pk=pk).price
+    else:
+        price = 0
+    return JsonResponse({"price": price})
+    # I update product.count only by OrderItem signal, because adding product to basket
+    # is not a purchase
+
+
+@receiver(pre_save, sender=OrderItem)
+def product_count_update_save(instance, sender, **kwargs):
+    quantity_delta = instance.quantity
+    if instance.pk:
+        quantity_delta -= sender.get_item(instance.pk).quantity
+    instance.product.count -= quantity_delta
+    instance.product.save()
+
+
+@receiver(pre_delete, sender=OrderItem)
+def product_count_update_delete(instance, sender, **kwargs):
+    instance.product.count += instance.quantity
+    instance.product.save()
+
+# Deleting orderitem if quantity = 0
+
+
+@receiver(post_save, sender=OrderItem)
+def del_zero_quant(instance, sender, **kwargs):
+    product = OrderItem.objects.filter(pk=instance.pk)
+    if len(product):
+        if int(instance.quantity) == 0:
+            sender.get_item(instance.pk).delete()
