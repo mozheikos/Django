@@ -1,5 +1,5 @@
 import re
-
+import smtplib
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,7 +30,8 @@ def login(request):
                 return HttpResponseRedirect(request.POST["next_page"])
             return HttpResponseRedirect(reverse("main"))
 
-    content = {"title": title, "login_form": login_form, "next_page": next_page}
+    content = {"title": title, "login_form": login_form,
+               "next_page": next_page}
     return render(request, "authnapp/login.html", content)
 
 
@@ -58,7 +59,8 @@ def register(request):
 
     if request.method == "POST":
         if request.META.get("HTTP_REFERER").find("admin/users_create/") != -1:
-            register_form = ShopUserAdminCreationForm(request.POST, request.FILES)
+            register_form = ShopUserAdminCreationForm(
+                request.POST, request.FILES)
         else:
             register_form = ShopUserRegisterForm(request.POST, request.FILES)
 
@@ -84,17 +86,33 @@ def register(request):
 def user_edit(request):
     title = "Профиль пользователя"
     if request.method == "POST":
-        edit_form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
-        profile_form = ShopUserProfileEditForm(request.POST, instance=request.user.shopuserprofile)
+        edit_form = ShopUserEditForm(
+            request.POST, request.FILES, instance=request.user)
+        profile_form = ShopUserProfileEditForm(
+            request.POST, instance=request.user.shopuserprofile)
         if edit_form.is_valid() and profile_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse("auth:profile"))
     else:
         edit_form = ShopUserEditForm(instance=request.user)
-        profile_form = ShopUserProfileEditForm(instance=request.user.shopuserprofile)
+        profile_form = ShopUserProfileEditForm(
+            instance=request.user.shopuserprofile)
 
-    context = {"title": title, "edit_form": edit_form, "profile_form": profile_form, "media_url": settings.MEDIA_URL}
+    context = {"title": title, "edit_form": edit_form,
+               "profile_form": profile_form, "media_url": settings.MEDIA_URL}
     return render(request, "authnapp/edit.html", context)
+
+
+"""
+def send_verify_mail(user):
+    verify_link = reverse("auth:verify", args=[user.id, user.auth_key])
+
+    title = f"Подтверждение регистрации {user.username}"
+    message = f"Вы зарегистрировались на портале {settings.DOMAIN_NAME}. Для подтверждения \
+                регистрации перейдите по ссылке:\n{settings.DOMAIN_NAME}{verify_link}"
+
+    return send_mail(title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+"""
 
 
 def send_verify_mail(user):
@@ -104,7 +122,26 @@ def send_verify_mail(user):
     message = f"Вы зарегистрировались на портале {settings.DOMAIN_NAME}. Для подтверждения \
                 регистрации перейдите по ссылке:\n{settings.DOMAIN_NAME}{verify_link}"
 
-    return send_mail(title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+    HOST = settings.EMAIL_HOST
+    SUBJECT = title
+    TO = user.email
+    FROM = settings.EMAIL_HOST_USER
+    PASSWD = settings.EMAIL_HOST_PASSWORD
+    PORT = settings.EMAIL_PORT
+
+    BODY = "\n".join((
+        "From: %s" % FROM,
+        "To: %s" % TO,
+        "Subject: %s" % SUBJECT,
+        "",
+        message
+    ))
+
+    server = smtplib.SMTP_SSL(HOST, PORT)
+    server.login(FROM, PASSWD)
+    server.sendmail(FROM, [TO], BODY.encode('utf-8'))
+    server.quit()
+    return True
 
 
 def verify(request, user_id, user_auth_key):
@@ -115,7 +152,8 @@ def verify(request, user_id, user_auth_key):
     if user.auth_key == user_auth_key and not user.is_activation_key_expired():
         user.is_active = True
         user.save()
-        auth.login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+        auth.login(request, user,
+                   backend="django.contrib.auth.backends.ModelBackend")
         link = reverse("main")
 
     # Пока закооментировал вариант истекшим ключем, так как очень не хватает времени
@@ -125,7 +163,8 @@ def verify(request, user_id, user_auth_key):
     #    user.get_auth_key()
     #    link = reverse('auth:resend_verify_link', args=[user.id])
 
-    content = {"title": title, "media_url": settings.MEDIA_URL, "link": link, "user": user}
+    content = {"title": title, "media_url": settings.MEDIA_URL,
+               "link": link, "user": user}
     return render(request, "authnapp/verify.html", content)
 
 
