@@ -160,29 +160,29 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = "authnapp:login"
 
 # email settings
-DOMAIN_NAME = "http://localhost:8000"
+DOMAIN_NAME = "http://194.58.120.145"
 
 # Read about sending email:
 #   https://docs.djangoproject.com/en/2.2/topics/email/
 
 # Full list of email settings:
 #   https://docs.djangoproject.com/en/2.2/ref/settings/#email
-EMAIL_HOST = "localhost"
-EMAIL_PORT = "25"
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
 
-EMAIL_USE_SSL = False
+EMAIL_USE_SSL = True
 # If server support TLS:
-# EMAIL_USE_TLS = True
+EMAIL_USE_TLS = True
 
-#EMAIL_HOST_USER = "django@geekshop.local"
-#EMAIL_HOST_PASSWORD = "geekshop"
+EMAIL_HOST_USER = "mozheiko.stanislav@yandex.ru"
+EMAIL_HOST_PASSWORD = "khsvktwuinpygxwv"
 # For debugging: python -m smtpd -n -c DebuggingServer localhost:25
-EMAIL_HOST_USER = None
-EMAIL_HOST_PASSWORD = None
+#EMAIL_HOST_USER = None
+#EMAIL_HOST_PASSWORD = None
 
 # Email as files
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = "tmp/email-messages/"
+#EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+#EMAIL_FILE_PATH = "tmp/email-messages/"
 
 # OAuth
 

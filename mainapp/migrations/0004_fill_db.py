@@ -145,7 +145,7 @@ def forward(apps, schema_editor):
     contact_model.objects.create(
         pk=1,
         city="Москва",
-        phone="+7-495-955-95-95",
+        phone="955-95-95",
         mail="moscow_mail@yandex.ru",
         address="ул. 3-я Строителей, 25, оф. 12",
     )
@@ -153,7 +153,7 @@ def forward(apps, schema_editor):
     contact_model.objects.create(
         pk=2,
         city="Ленинград",
-        phone="+7-812-955-95-95",
+        phone="955-95-95",
         mail="leningrad_mail@yandex.ru",
         address="ул. 3-я Строителей, 25, оф. 12",
     )
@@ -161,7 +161,7 @@ def forward(apps, schema_editor):
     contact_model.objects.create(
         pk=3,
         city="Белгород",
-        phone="+7-4722-55-95-95",
+        phone="55-95-95",
         mail="belgorod_mail@yandex.ru",
         address="ул. 3-я Строителей, 25, оф. 12",
     )
