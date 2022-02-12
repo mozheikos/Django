@@ -27,7 +27,7 @@ SECRET_KEY = (
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if os.getenv("DJANGO_PRODUCTION", default=None) else True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -57,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
 
 ROOT_URLCONF = "geekshop.urls"
@@ -85,14 +86,23 @@ WSGI_APPLICATION = "geekshop.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
-
+else:
+    DATABASES = {
+        "default": {
+            "NAME": "geekshop",
+            "ENGINE": "django.db.backends.postgresql",
+            "USER": "django",
+            "PASSWORD": "geekbrains",
+            "HOST": "localhost",
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -134,7 +144,10 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+if DEBUG:
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_URL = "/media/"
 
@@ -161,11 +174,11 @@ EMAIL_USE_SSL = False
 # If server support TLS:
 # EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = "django@geekshop.local"
-EMAIL_HOST_PASSWORD = "geekshop"
+#EMAIL_HOST_USER = "django@geekshop.local"
+#EMAIL_HOST_PASSWORD = "geekshop"
 # For debugging: python -m smtpd -n -c DebuggingServer localhost:25
-# EMAIL_HOST_USER = None
-# EMAIL_HOST_PASSWORD = None
+EMAIL_HOST_USER = None
+EMAIL_HOST_PASSWORD = None
 
 # Email as files
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
