@@ -38,6 +38,6 @@ class Product(models.Model):
 
 class Contact(models.Model):
     city = models.CharField(verbose_name="город", max_length=120)
-    phone = models.CharField(verbose_name="телефон", max_length=15)
+    phone = models.CharField(verbose_name="телефон", max_length=20)
     mail = models.EmailField(verbose_name="e-mail", max_length=64)
     address = models.CharField(verbose_name="адрес", max_length=255)
