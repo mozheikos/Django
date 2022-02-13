@@ -15,7 +15,7 @@ class ShopUser(AbstractUser):
     avatar = models.ImageField(upload_to="users_avatars", blank=True)
     age = PositiveSmallIntegerField(verbose_name="возраст", default=20)
     auth_key = models.CharField(max_length=256, blank=True)
-    auth_key_is_expired = models.DateTimeField(default=(now() + timedelta(hours=48)))
+    auth_key_is_expired = models.DateTimeField(default=now(), blank=True)
 
     def is_activation_key_expired(self):
         if now() <= self.auth_key_is_expired:
@@ -23,8 +23,10 @@ class ShopUser(AbstractUser):
         return True
 
     def get_auth_key(self):
-        salt = hashlib.sha1(str(random.random()).encode("utf8")).hexdigest()[:6]
-        self.auth_key = hashlib.sha1((self.email + salt).encode("utf8")).hexdigest()
+        salt = hashlib.sha1(
+            str(random.random()).encode("utf8")).hexdigest()[:6]
+        self.auth_key = hashlib.sha1(
+            (self.email + salt).encode("utf8")).hexdigest()
         self.auth_key_is_expired = now() + timedelta(hours=48)
 
 
@@ -37,11 +39,15 @@ class ShopUserProfile(models.Model):
         (FEMALE, "Жен"),
     )
 
-    user = models.OneToOneField(ShopUser, unique=True, null=False, db_index=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        ShopUser, unique=True, null=False, db_index=True, on_delete=models.CASCADE)
     tagline = models.CharField(verbose_name="теги", max_length=128, blank=True)
-    aboutMe = models.TextField(verbose_name="о себе", max_length=512, blank=True)
-    interests = models.TextField(verbose_name="интересы", max_length=256, blank=True)
-    gender = models.CharField(verbose_name="пол", max_length=1, choices=GENDER_CHOICES, blank=True)
+    aboutMe = models.TextField(
+        verbose_name="о себе", max_length=512, blank=True)
+    interests = models.TextField(
+        verbose_name="интересы", max_length=256, blank=True)
+    gender = models.CharField(
+        verbose_name="пол", max_length=1, choices=GENDER_CHOICES, blank=True)
 
     @receiver(post_save, sender=ShopUser)
     def create_user_profile(sender, instance, created, **kwargs):
