@@ -170,7 +170,7 @@ DOMAIN_NAME = "http://194.58.120.145"
 EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_PORT = 465
 
-EMAIL_USE_SSL = True
+EMAIL_USE_SSL = False
 # If server support TLS:
 EMAIL_USE_TLS = True
 

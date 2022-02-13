@@ -1,13 +1,10 @@
 import json
-from random import choice, randint
+from random import choice
 
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.utils import timezone
-
-from basketapp.models import Basket
-
 from .models import Category, Contact, Product
 
 
@@ -39,7 +36,7 @@ def products(request, product_pk=None, category_pk=0, page=1):
     category_pk = int(category_pk)
     page = int(page)
     title = "продукты"
-    links = Category.objects.filter(is_active=True)
+    links = Category.objects.filter(is_active=True).order_by("id")
     hot = False
     product_large = None
     if product_pk:
@@ -57,9 +54,11 @@ def products(request, product_pk=None, category_pk=0, page=1):
             )
             hot = True
         elif category_pk == 1:
-            same_products = Product.objects.filter(is_active=True, category__is_active=True)
+            same_products = Product.objects.filter(
+                is_active=True, category__is_active=True).order_by("category_id")
         else:
-            same_products = Product.objects.filter(category_id=category_pk, is_active=True)
+            same_products = Product.objects.filter(
+                category_id=category_pk, is_active=True)
 
     paginator = Paginator(same_products, 3)
     products_paginator = paginator.page(page)
