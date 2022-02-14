@@ -52,10 +52,20 @@ $(document).ready(function () {
                 let link = document.querySelector('.modal_link_ok');
                 link.innerText = 'OK';
                 link.href = data.href;
-                // Вставляем текст из пришедшего сообщения
-                $('.modal_message').text(data.status);
-                // После заполнения показываем само окно
-                $('.modal_bg').addClass("show_reg");
+                if (!data.errors) {
+                    // Вставляем текст из пришедшего сообщения
+                    $('.modal_message').text(data.status);
+                    // После заполнения показываем само окно
+                    $('.modal_bg').addClass("show_reg");
+                } else {
+                    $('.modal_message').text(data.errors);
+                    $('.modal_bg').addClass("show_reg");
+                    link.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        $('.modal_bg').removeClass("show_reg");
+                    });
+                };
+
             },
         });
     });

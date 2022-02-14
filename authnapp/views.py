@@ -74,7 +74,16 @@ def register(request):
                 status = f"На Ваш почтовый ящик {user.email} отправлено письмо подтверждения регистрации.\n \
                                     Для завершения регистрации, пожалуйста, перейдите по ссылке в письме"
             href = reverse("main")
-            return JsonResponse({"status": status, "href": href})
+            errors = False
+            return JsonResponse({"status": status, "href": href, "errors": errors})
+        else:
+            errors_list = []
+            for field, value in register_form.errors.items():
+                errors_list += register_form.errors[field]
+            errors = '\n'.join(errors_list)
+            status = errors
+            href = "#"
+            return JsonResponse({"status": status, "href": href, "errors": errors})
 
     else:
         register_form = ShopUserRegisterForm()
