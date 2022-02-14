@@ -160,7 +160,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = "authnapp:login"
 
 # email settings
-DOMAIN_NAME = "http://194.58.120.145"
+if DEBUG:
+    DOMAIN_NAME = "http://192.168.0.14:8000"
+else:
+    DOMAIN_NAME = "http://194.58.120.145"
 
 # Read about sending email:
 #   https://docs.djangoproject.com/en/2.2/topics/email/

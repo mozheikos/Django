@@ -78,11 +78,11 @@ def register(request):
             return JsonResponse({"status": status, "href": href, "errors": errors})
         else:
             errors_list = []
-            for field, value in register_form.errors.items():
-                errors_list += register_form.errors[field]
+            for value in register_form.errors.values():
+                errors_list += value
             errors = '\n'.join(errors_list)
             status = errors
-            href = "#"
+            href = reverse("auth:register")
             return JsonResponse({"status": status, "href": href, "errors": errors})
 
     else:
