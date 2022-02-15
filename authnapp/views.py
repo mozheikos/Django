@@ -3,6 +3,7 @@ import smtplib
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.shortcuts import HttpResponseRedirect, render
@@ -40,6 +41,7 @@ def logout(request):
     return HttpResponseRedirect(reverse("main"))
 
 
+@login_required
 def user_profile(request):
     title = "Профиль пользователя"
     context = {
@@ -92,6 +94,7 @@ def register(request):
     return render(request, "authnapp/register.html", content)
 
 
+@login_required
 def user_edit(request):
     title = "Профиль пользователя"
     if request.method == "POST":
