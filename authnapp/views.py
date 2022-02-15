@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from django.shortcuts import HttpResponseRedirect, render
 from django.urls import reverse
 from django.views.generic.detail import DetailView
-
+from django.db import transaction
 from adminapp.forms import ShopUserAdminCreationForm
 from authnapp.forms import ShopUserEditForm, ShopUserLoginForm, ShopUserProfileEditForm, ShopUserRegisterForm
 from authnapp.models import ShopUser
@@ -95,6 +95,7 @@ def register(request):
 
 
 @login_required
+@transaction.atomic
 def user_edit(request):
     title = "Профиль пользователя"
     if request.method == "POST":
