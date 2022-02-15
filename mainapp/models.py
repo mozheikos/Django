@@ -8,7 +8,7 @@ class Category(models.Model):
     description = models.TextField(
         verbose_name="описание категории", blank=True)
     is_active = models.BooleanField(
-        verbose_name="категория активна", default=True)
+        verbose_name="категория активна", default=True, db_index=True)
 
     def __str__(self) -> str:
         return self.title
@@ -26,7 +26,7 @@ class Product(models.Model):
     count = models.PositiveIntegerField(
         verbose_name="количество на складе", default=0)
     is_active = models.BooleanField(
-        verbose_name="продукт активен", default=True)
+        verbose_name="продукт активен", default=True, db_index=True)
 
     def __str__(self) -> str:
         return f"{self.name} - ({self.category.title})"
