@@ -108,18 +108,18 @@ else:
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    # },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    # },
 ]
 
 # Auth model
@@ -160,7 +160,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = "authnapp:login"
 
 # email settings
-DOMAIN_NAME = "http://194.58.120.145"
+if DEBUG:
+    DOMAIN_NAME = "http://192.168.0.14:8000"
+else:
+    DOMAIN_NAME = "http://194.58.120.145"
 
 # Read about sending email:
 #   https://docs.djangoproject.com/en/2.2/topics/email/
@@ -206,3 +209,46 @@ SOCIAL_AUTH_GITHUB_SECRET = github_auth["client_secret"]
 
 SOCIAL_AUTH_VK_OAUTH2_KEY = vk_auth["client_id"]
 SOCIAL_AUTH_VK_OAUTH2_SECRET = vk_auth["client_secret"]
+
+# Django Debug Toolbar --->
+if DEBUG:
+    INSTALLED_APPS.extend([
+        "debug_toolbar",
+        "template_profiler_panel",
+        "django_extensions",
+    ])
+
+
+if DEBUG:
+    MIDDLEWARE.extend([
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ])
+
+# Debgu tool bar settings
+if DEBUG:
+
+    def show_toolbar(request):
+        return True
+
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+    }
+
+    DEBUG_TOOLBAR_PANELS = [
+        # "ddt_request_history.panels.request_history.RequestHistoryPanel",
+        "debug_toolbar.panels.versions.VersionsPanel",
+        "debug_toolbar.panels.timer.TimerPanel",
+        "debug_toolbar.panels.settings.SettingsPanel",
+        "debug_toolbar.panels.headers.HeadersPanel",
+        "debug_toolbar.panels.request.RequestPanel",
+        "debug_toolbar.panels.sql.SQLPanel",
+        "debug_toolbar.panels.templates.TemplatesPanel",
+        "debug_toolbar.panels.staticfiles.StaticFilesPanel",
+        "debug_toolbar.panels.cache.CachePanel",
+        "debug_toolbar.panels.signals.SignalsPanel",
+        "debug_toolbar.panels.logging.LoggingPanel",
+        "debug_toolbar.panels.redirects.RedirectsPanel",
+        "debug_toolbar.panels.profiling.ProfilingPanel",
+        "template_profiler_panel.panels.template.TemplateProfilerPanel",
+    ]
+# <--- Django Debug Toolbar

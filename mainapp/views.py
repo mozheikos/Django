@@ -16,7 +16,8 @@ def get_controller_data(file_name):
 
 def get_random_product():
     products = Product.objects.filter(is_active=True, category__is_active=True)
-    return choice(products)
+    product = choice(products)
+    return (product, products.filter(category_id=product.category_id).exclude(pk=product.pk))
 
 
 def main(request):
@@ -47,18 +48,19 @@ def products(request, product_pk=None, category_pk=0, page=1):
         )
     else:
         if not category_pk:
-            product_large = get_random_product()
+            product_large, same_products = get_random_product()
             category_pk = product_large.category_id
-            same_products = Product.objects.filter(category_id=product_large.category_id, is_active=True).exclude(
-                pk=product_large.pk
-            )
+            # same_products = Product.objects.filter(category_id=product_large.category_id, is_active=True).exclude(
+            #    pk=product_large.pk
+            # )
             hot = True
-        elif category_pk == 1:
-            same_products = Product.objects.filter(
-                is_active=True, category__is_active=True).order_by("category_id")
         else:
-            same_products = Product.objects.filter(
-                category_id=category_pk, is_active=True)
+            if category_pk == 1:
+                same_products = Product.objects.filter(
+                    is_active=True, category__is_active=True).order_by("category_id")
+            else:
+                same_products = Product.objects.filter(
+                    category_id=category_pk, is_active=True)
 
     paginator = Paginator(same_products, 3)
     products_paginator = paginator.page(page)
@@ -72,8 +74,8 @@ def products(request, product_pk=None, category_pk=0, page=1):
         "category": category_pk,
         "hot": hot,
     }
-    if category_pk:
-        print(f"User select category: {category_pk}")
+    # if category_pk:
+    #    print(f"User select category: {category_pk}")
     return render(request, "mainapp/products.html", content)
 
 

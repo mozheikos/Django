@@ -51,11 +51,19 @@ $(document).ready(function () {
                 console.log(data);
                 let link = document.querySelector('.modal_link_ok');
                 link.innerText = 'OK';
-                link.href = data.href;
-                // Вставляем текст из пришедшего сообщения
-                $('.modal_message').text(data.status);
-                // После заполнения показываем само окно
-                $('.modal_bg').addClass("show_reg");
+                if (!data.errors) {
+                    link.href = data.href;
+                    // Вставляем текст из пришедшего сообщения
+                    $('.modal_message').text(data.status);
+                    // После заполнения показываем само окно
+                    $('.modal_bg').addClass("show_reg");
+                } else {
+                    link.href = data.href;
+                    $('.modal_message').text(data.errors);
+                    $('.modal_bg').addClass("show_reg");
+
+                };
+
             },
         });
     });

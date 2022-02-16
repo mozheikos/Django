@@ -3,12 +3,13 @@ import smtplib
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.shortcuts import HttpResponseRedirect, render
 from django.urls import reverse
 from django.views.generic.detail import DetailView
-
+from django.db import transaction
 from adminapp.forms import ShopUserAdminCreationForm
 from authnapp.forms import ShopUserEditForm, ShopUserLoginForm, ShopUserProfileEditForm, ShopUserRegisterForm
 from authnapp.models import ShopUser
@@ -40,6 +41,7 @@ def logout(request):
     return HttpResponseRedirect(reverse("main"))
 
 
+@login_required
 def user_profile(request):
     title = "Профиль пользователя"
     context = {
@@ -74,7 +76,16 @@ def register(request):
                 status = f"На Ваш почтовый ящик {user.email} отправлено письмо подтверждения регистрации.\n \
                                     Для завершения регистрации, пожалуйста, перейдите по ссылке в письме"
             href = reverse("main")
-            return JsonResponse({"status": status, "href": href})
+            errors = False
+            return JsonResponse({"status": status, "href": href, "errors": errors})
+        else:
+            errors_list = []
+            for value in register_form.errors.values():
+                errors_list += value
+            errors = '\n'.join(errors_list)
+            status = errors
+            href = reverse("auth:register")
+            return JsonResponse({"status": status, "href": href, "errors": errors})
 
     else:
         register_form = ShopUserRegisterForm()
@@ -83,6 +94,8 @@ def register(request):
     return render(request, "authnapp/register.html", content)
 
 
+@login_required
+@transaction.atomic
 def user_edit(request):
     title = "Профиль пользователя"
     if request.method == "POST":

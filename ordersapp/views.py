@@ -9,6 +9,7 @@ from django.shortcuts import HttpResponseRedirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.views.generic.detail import DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from basketapp.models import Basket
 from ordersapp.forms import OrderItemForm
@@ -16,14 +17,14 @@ from ordersapp.models import Order, OrderItem
 from mainapp.models import Product
 
 
-class OrderList(ListView):
+class OrderList(LoginRequiredMixin, ListView):
     model = Order
 
     def get_queryset(self):
         return Order.objects.filter(user_id=self.request.user.pk)
 
 
-class OrderItemsCreate(CreateView):
+class OrderItemsCreate(LoginRequiredMixin, CreateView):
     model = Order
     fields = []
     success_url = reverse_lazy("ordersapp:orders_list")
@@ -73,7 +74,7 @@ class OrderItemsCreate(CreateView):
         return super(OrderItemsCreate, self).form_valid(form)
 
 
-class OrderRead(DetailView):
+class OrderRead(LoginRequiredMixin, DetailView):
     model = Order
 
     def get_context_data(self, **kwargs):
@@ -82,7 +83,7 @@ class OrderRead(DetailView):
         return context
 
 
-class OrderItemsUpdate(UpdateView):
+class OrderItemsUpdate(LoginRequiredMixin, UpdateView):
     model = Order
     fields = []
     success_url = reverse_lazy("ordersapp:orders_list")
@@ -95,7 +96,8 @@ class OrderItemsUpdate(UpdateView):
             data["orderitems"] = OrderFormSet(
                 self.request.POST, instance=self.object)
         else:
-            formset = OrderFormSet(instance=self.object)
+            queryset = self.object.orderitems.select_related()
+            formset = OrderFormSet(instance=self.object, queryset=queryset)
             for form in formset.forms:
                 if form.instance.pk:
                     form.initial["price"] = form.instance.product.price
@@ -119,7 +121,7 @@ class OrderItemsUpdate(UpdateView):
         return super(OrderItemsUpdate, self).form_valid(form)
 
 
-class OrderDelete(DeleteView):
+class OrderDelete(LoginRequiredMixin, DeleteView):
     model = Order
     success_url = reverse_lazy("ordersapp:orders_list")
 
