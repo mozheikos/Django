@@ -1523,7 +1523,11 @@ td:first-child {
 .form_field {
 	display: flex;
 	align-items: center;
-	margin: 30px;
+	margin: 10px;
+}
+.helptext {
+	display: inline-block;
+	margin-bottom: 30px;
 }
 .form_buttons {
 	display: flex;
@@ -1729,4 +1733,10 @@ td:first-child {
 }
 .admin_order_h2 {
 	margin-left: 80px;
+}
+.red {
+	color:#d41306;
+	font-family: 'Times New Roman', Times, serif;
+	text-transform: uppercase;
+	font-size: 14px;
 }

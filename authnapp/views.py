@@ -79,13 +79,9 @@ def register(request):
             errors = False
             return JsonResponse({"status": status, "href": href, "errors": errors})
         else:
-            errors_list = []
-            for value in register_form.errors.values():
-                errors_list += value
-            errors = '\n'.join(errors_list)
-            status = errors
+            errors = True
             href = reverse("auth:register")
-            return JsonResponse({"status": status, "href": href, "errors": errors})
+            return JsonResponse({"href": href, "errors": errors, "form": register_form.as_p()})
 
     else:
         register_form = ShopUserRegisterForm()
@@ -94,8 +90,8 @@ def register(request):
     return render(request, "authnapp/register.html", content)
 
 
-@login_required
-@transaction.atomic
+@ login_required
+@ transaction.atomic
 def user_edit(request):
     title = "Профиль пользователя"
     if request.method == "POST":
