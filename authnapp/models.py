@@ -1,3 +1,4 @@
+from functools import cached_property
 import hashlib
 import random
 from datetime import timedelta
@@ -28,6 +29,10 @@ class ShopUser(AbstractUser):
         self.auth_key = hashlib.sha1(
             (self.email + salt).encode("utf8")).hexdigest()
         self.auth_key_is_expired = now() + timedelta(hours=48)
+
+    @cached_property
+    def basket_items(self):
+        return self.basket.select_related()
 
 
 class ShopUserProfile(models.Model):

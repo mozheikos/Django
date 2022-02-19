@@ -8,6 +8,19 @@ from django.utils import timezone
 from .models import Category, Contact, Product
 
 
+def get_all_active_products(category_pk=1):
+    if category_pk == 1:
+        category = Category.objects.filter(id__gt=1, is_active=True)
+        products = []
+        for item in category:
+            _products = item.category_products
+            products.extend(_products)
+    else:
+        category = Category.objects.get(pk=category_pk)
+        products = category.category_products
+    return products
+
+
 def get_controller_data(file_name):
     with open(f"data_json/{file_name}", "r") as f:
         data = json.load(f)
@@ -15,15 +28,23 @@ def get_controller_data(file_name):
 
 
 def get_random_product():
-    products = Product.objects.filter(is_active=True, category__is_active=True)
+    #products = Product.objects.filter(is_active=True, category__is_active=True)
+    products = get_all_active_products()
     product = choice(products)
-    return (product, products.filter(category_id=product.category_id).exclude(pk=product.pk))
+    return (product, [x for x in products if x.category_id == product.category_id and x.id != product.id])
+    # return (product, products.filter(category_id=product.category_id).exclude(pk=product.pk))
 
 
 def main(request):
     title = "Главная"
 
-    products = Product.objects.filter(is_active=True, category__is_active=True)
+    products = get_all_active_products()
+    #category = Category.objects.filter(id__gt=1, is_active=True)
+    #products = []
+    # for item in category:
+    #    _products = item.category_products
+    #    products.extend(_products)
+    #products = Product.objects.filter(is_active=True, category__is_active=True)
 
     content = {
         "title": title,
@@ -43,9 +64,11 @@ def products(request, product_pk=None, category_pk=0, page=1):
     if product_pk:
         product_pk = int(product_pk)
         product_large = Product.objects.get(pk=product_pk)
-        same_products = Product.objects.filter(category_id=product_large.category_id, is_active=True).exclude(
-            pk=product_pk
-        )
+        same_products = get_all_active_products(
+            product_large.category_id).exclude(pk=product_pk)
+        # same_products = Product.objects.filter(category_id=product_large.category_id, is_active=True).exclude(
+        #     pk=product_pk
+        # )
     else:
         if not category_pk:
             product_large, same_products = get_random_product()
@@ -55,12 +78,13 @@ def products(request, product_pk=None, category_pk=0, page=1):
             # )
             hot = True
         else:
-            if category_pk == 1:
-                same_products = Product.objects.filter(
-                    is_active=True, category__is_active=True).order_by("category_id")
-            else:
-                same_products = Product.objects.filter(
-                    category_id=category_pk, is_active=True)
+            same_products = get_all_active_products(category_pk=category_pk)
+            # if category_pk == 1:
+            #     same_products = Product.objects.filter(
+            #         is_active=True, category__is_active=True).order_by("category_id")
+            # else:
+            #     same_products = Product.objects.filter(
+            #         category_id=category_pk, is_active=True)
 
     paginator = Paginator(same_products, 3)
     products_paginator = paginator.page(page)

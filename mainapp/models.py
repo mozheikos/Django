@@ -1,3 +1,4 @@
+from functools import cached_property
 from django.db import models
 from django.db.models.deletion import CASCADE
 
@@ -12,6 +13,10 @@ class Category(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    @cached_property
+    def category_products(self):
+        return self.product_set.select_related().exclude(is_active=False)
 
 
 class Product(models.Model):
