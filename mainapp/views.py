@@ -1,5 +1,4 @@
 import json
-from os import link
 from random import choice
 from django.core.cache import cache
 from django.conf import settings
@@ -7,6 +6,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.utils import timezone
 from .models import Category, Contact, Product
+from django.views.decorators.cache import cache_page
 
 
 def get_links():
@@ -94,6 +94,7 @@ def get_random_product():
     return (product, [x for x in products if x.category_id == product.category_id and x.id != product.id])
 
 
+# @cache_page(600)
 def main(request):
     title = "Главная"
 
@@ -146,6 +147,7 @@ def products(request, product_pk=None, category_pk=0, page=1):
     return render(request, "mainapp/products.html", content)
 
 
+@cache_page(600)
 def contact(request):
     title = "о нас"
 
