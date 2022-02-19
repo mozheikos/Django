@@ -91,14 +91,14 @@ def get_controller_data(file_name):
 def get_random_product():
     products = get_all_active_products()
     product = choice(products)
-    return (product, [x for x in products if x.category_id == product.category_id and x.id != product.id])
+    return product, [x for x in products if x.category_id == product.category_id and x.id != product.id]
 
 
 # @cache_page(600)
 def main(request):
     title = "Главная"
 
-    products = get_all_active_products()
+    products = get_all_active_products("name")
 
     content = {
         "title": title,
