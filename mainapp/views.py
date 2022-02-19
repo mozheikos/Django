@@ -42,9 +42,15 @@ def get_all_active_products(*args):
         key = "all_active_products"
         products = cache.get(key)
         if products is None:
-            products = Product.objects.filter(
-                is_active=True, category__is_active=True).order_by(*order)
-            cache.set(key, products)
+            # products = Product.objects.filter(
+            #     is_active=True, category__is_active=True)
+            category = Category.objects.filter(
+                id__gt=1, is_active=True).order_by("id")
+            products = []
+            for item in category:
+                _products = item.category_products.order_by(*order)
+                products.extend(_products)
+                cache.set(key, products)
         return products
     else:
         category = Category.objects.filter(
@@ -91,7 +97,7 @@ def get_random_product():
 def main(request):
     title = "Главная"
 
-    products = get_all_active_products("category_id", "name")
+    products = get_all_active_products()
 
     content = {
         "title": title,
