@@ -8,6 +8,14 @@ from django.utils import timezone
 from .models import Category, Contact, Product
 
 
+class Fact():
+    def get_factorial(self):
+        fact = 1
+        for i in range(1, 15001):
+            fact *= i
+        return fact
+
+
 def get_all_active_products(category_pk=1):
     if category_pk == 1:
         category = Category.objects.filter(id__gt=1, is_active=True)
@@ -50,6 +58,7 @@ def main(request):
         "title": title,
         "products": products,
         "media_url": settings.MEDIA_URL,
+        "fact": Fact(),
     }
     return render(request, "mainapp/index.html", content)
 
