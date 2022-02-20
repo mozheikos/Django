@@ -15,10 +15,7 @@ class Category(models.Model):
         return self.title
 
     def save(self):
-        products = self.product_set.select_related()
-        for product in products:
-            product.is_active = self.is_active
-            product.save()
+        self.product_set.update(is_active=self.is_active)
         super(Category, self).save()
 
     @cached_property
