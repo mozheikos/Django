@@ -14,6 +14,13 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    def save(self):
+        products = self.product_set.select_related()
+        for product in products:
+            product.is_active = self.is_active
+            product.save()
+        super(Category, self).save()
+
     @cached_property
     def category_products(self):
         return self.product_set.select_related().exclude(is_active=False)
@@ -38,7 +45,7 @@ class Product(models.Model):
 
     @staticmethod
     def get_items():
-        return Product.objects.filter(is_active=True, category__is_active=True)
+        return Product.objects.filter(is_active=True)
 
 
 class Contact(models.Model):
