@@ -32,6 +32,10 @@
         <span class="field">Описание товара</span>
         <span class="value">{{ object.description }}</span>
     </div>
+    <div class="user_profile_field">
+        <span class="field">Скидка</span>
+        <span class="value">{{ object.discount }}%</span>
+    </div>
 
     <div class="user_profile_links">
         <a class="adminapp_button" href="{% url 'admin:category_view' object.category.pk %}">Назад</a>
