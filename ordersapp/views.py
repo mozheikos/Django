@@ -1,5 +1,3 @@
-from dataclasses import fields
-
 from django.db import transaction
 from django.dispatch import receiver
 from django.db.models.signals import pre_delete, pre_save, post_save
