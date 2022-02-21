@@ -48,6 +48,11 @@ class Product(models.Model):
     def get_items():
         return Product.objects.filter(is_active=True)
 
+    def save(self):
+        self.price = F("price") - (F("price") /
+                                   (100 - F('discount')) * (self.discount - F("discount")))
+        return super(Product, self).save()
+
 
 class Contact(models.Model):
     city = models.CharField(verbose_name="город", max_length=120)
