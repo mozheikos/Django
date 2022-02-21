@@ -11,6 +11,8 @@ class Category(models.Model):
         verbose_name="описание категории", blank=True)
     is_active = models.BooleanField(
         verbose_name="категория активна", default=True, db_index=True)
+
+    # add field "discount" to enable recalculate price when discount changes in "+" or "-"
     discount = models.SmallIntegerField(verbose_name="Скидка", default=0)
 
     def __str__(self) -> str:
@@ -39,6 +41,8 @@ class Product(models.Model):
         verbose_name="количество на складе", default=0)
     is_active = models.BooleanField(
         verbose_name="продукт активен", default=True, db_index=True)
+
+    # add field "discount" to enable recalculate price when discount changes in "+" or "-"
     discount = models.SmallIntegerField(verbose_name="Скидка", default=0)
 
     def __str__(self) -> str:
@@ -59,3 +63,9 @@ class Contact(models.Model):
     phone = models.CharField(verbose_name="телефон", max_length=20)
     mail = models.EmailField(verbose_name="e-mail", max_length=64)
     address = models.CharField(verbose_name="адрес", max_length=255)
+
+
+def db_profile_by_type(prefix, type, queries):
+    update_queries = list(filter(lambda x: type in x["sql"], queries))
+    print(f"db_profile {type} for {prefix}:")
+    [print(query["sql"]) for query in update_queries]

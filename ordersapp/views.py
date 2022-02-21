@@ -13,6 +13,7 @@ from basketapp.models import Basket
 from ordersapp.forms import OrderItemForm
 from ordersapp.models import Order, OrderItem
 from mainapp.models import Product
+from django.db.models import F
 
 
 class OrderList(LoginRequiredMixin, ListView):
@@ -150,13 +151,13 @@ def product_count_update_save(instance, sender, **kwargs):
     quantity_delta = instance.quantity
     if instance.pk:
         quantity_delta -= sender.get_item(instance.pk).quantity
-    instance.product.count -= quantity_delta
+    instance.product.count = F("count") - quantity_delta
     instance.product.save()
 
 
 @receiver(pre_delete, sender=OrderItem)
 def product_count_update_delete(instance, sender, **kwargs):
-    instance.product.count += instance.quantity
+    instance.product.count = F("count") + instance.quantity
     instance.product.save()
 
 # Deleting orderitem if quantity = 0
