@@ -54,6 +54,7 @@ def users(request, username=None):
 class UsersListView(LoginRequiredMixin, ListView):
     model = ShopUser
     template_name = "adminapp/users.html"
+    ordering = ("-is_active", "username")
 
     def get_context_data(self, **kwargs):
         context = super(UsersListView, self).get_context_data(**kwargs)
@@ -61,11 +62,11 @@ class UsersListView(LoginRequiredMixin, ListView):
         context["media_url"] = settings.MEDIA_URL
         context["login_url"] = settings.LOGIN_URL
         context["active"] = "users"
-        username = self.kwargs["username"] if "username" in self.kwargs.keys(
-        ) else None
-        if username:
-            self.queryset = ShopUser.objects.filter(
-                username__contains=username)
+        # username = self.kwargs["username"] if "username" in self.kwargs.keys(
+        # ) else None
+        # if username:
+        # self.queryset = ShopUser.objects.filter(
+        # username__contains=username)
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -444,7 +445,7 @@ class ProductDeleteNotView(LoginRequiredMixin, DeleteView):
 class Orders(LoginRequiredMixin, ListView):
     model = Order
     template_name = "adminapp/orders_list.html"
-    ordering = ("-created",)
+    ordering = ("created",)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

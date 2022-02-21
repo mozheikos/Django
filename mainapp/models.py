@@ -18,6 +18,7 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    # redefine save() method to accept discount (this will affect when discount set to category)
     def save(self):
         self.product_set.update(
             is_active=self.is_active, price=F("price") - (F("price") / (100 - F('discount')) * (self.discount - F("discount"))), discount=self.discount)
@@ -52,6 +53,7 @@ class Product(models.Model):
     def get_items():
         return Product.objects.filter(is_active=True)
 
+    # redefine save() method to accept discount (this will affect when discount set in single product update)
     def save(self):
         self.price = F("price") - (F("price") /
                                    (100 - F('discount')) * (self.discount - F("discount")))

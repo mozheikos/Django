@@ -42,8 +42,6 @@ def get_all_active_products(*args):
         key = "all_active_products"
         products = cache.get(key)
         if products is None:
-            # products = Product.objects.filter(
-            #     is_active=True, category__is_active=True)
             category = Category.objects.filter(
                 id__gt=1, is_active=True).order_by("id")
             products = []
