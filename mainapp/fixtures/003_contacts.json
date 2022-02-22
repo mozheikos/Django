@@ -4,29 +4,29 @@
         "pk": 1,
         "fields": {
             "city": "Москва",
-            "phone": "+7-888-888-8888",
-            "mail": "info@geekshop.ru",
-            "address": "В пределах МКАД"
+            "phone": "955-95-95",
+            "mail": "moscow_mail@yandex.ru",
+            "address": "ул. 3-я Строителей, 25, оф. 12"
         }
     },
     {
         "model": "mainapp.contact",
         "pk": 2,
         "fields": {
-            "city": "Екатеринбург",
-            "phone": "+7-777-777-7777",
-            "mail": "info_yekaterinburg@geekshop.ru",
-            "address": "Близко к центру"
+            "city": "Ленинград",
+            "phone": "955-95-95",
+            "mail": "leningrad_mail@yandex.ru",
+            "address": "ул. 3-я Строителей, 25, оф. 12"
         }
     },
     {
         "model": "mainapp.contact",
         "pk": 3,
         "fields": {
-            "city": "Владивосток",
-            "phone": "+7-999-999-9999",
-            "mail": "info_vladivostok@geekshop.ru",
-            "address": "Близко к океану"
+            "city": "Белгород",
+            "phone": "55-95-95",
+            "mail": "belgorod_mail@yandex.ru",
+            "address": "ул. 3-я Строителей, 25, оф. 12"
         }
     }
 ]
