@@ -60,7 +60,7 @@ def register(request):
     title = "регистрация"
 
     if request.method == "POST":
-        if request.META.get("HTTP_REFERER").find("admin/users_create/") != -1:
+        if request.META.get("HTTP_REFERER") and request.META.get("HTTP_REFERER").find("admin/users_create/") != -1:
             register_form = ShopUserAdminCreationForm(
                 request.POST, request.FILES)
         else:
@@ -68,7 +68,7 @@ def register(request):
 
         if register_form.is_valid():
             user = register_form.save()
-            if request.META.get("HTTP_REFERER").find("admin/users_create/") != -1:
+            if request.META.get("HTTP_REFERER") and request.META.get("HTTP_REFERER").find("admin/users_create/") != -1:
                 return HttpResponseRedirect(reverse("admin:users"))
 
             if send_verify_mail(user):
