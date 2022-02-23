@@ -56,3 +56,9 @@ class ProductsTestCase(TestCase):
         products = set([product_1, product_3])
 
         self.assertIsNotNone(products_as_class_method.intersection(products))
+
+    def test_category_products(self):
+        length = Category.objects.count()
+        for i in range(2, length):
+            category = Category.objects.get(pk=i)
+            self.assertIsNotNone(category.category_products)
