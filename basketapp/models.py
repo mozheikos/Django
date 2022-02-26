@@ -1,3 +1,4 @@
+from functools import cached_property
 from django.conf import settings
 from django.db import models
 from django.db.models.deletion import CASCADE
@@ -21,7 +22,8 @@ class Basket(models.Model):
 
     @classmethod
     def product_count(cls, user):
-        products = cls.objects.filter(user=user)
+        #products = cls.objects.filter(user=user)
+        products = user.basket_items
         cls._count = 0
         cls._total_cost = 0
         for item in products:
