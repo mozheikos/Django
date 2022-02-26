@@ -1,14 +1,10 @@
-from dataclasses import fields
-
-from django.contrib.auth import forms, models
-
 # from django.contrib.auth.forms import AuthenticationForm, UserChangeForm, UserCreationForm
+from django import forms
 from django.forms.models import ModelForm
-from pyexpat import model
 
 from authnapp.forms import ShopUserEditForm, ShopUserRegisterForm
 from authnapp.models import ShopUser
-from mainapp.models import Category, Product
+from mainapp.models import Category
 
 
 class ShopUserAdminCreationForm(ShopUserRegisterForm):
@@ -19,7 +15,8 @@ class ShopUserAdminCreationForm(ShopUserRegisterForm):
 
     class Meta:
         model = ShopUser
-        fields = ("username", "password1", "password2", "age", "is_staff", "is_superuser")
+        fields = ("username", "password1", "password2",
+                  "age", "is_staff", "is_superuser")
 
 
 class UserAdminEditForm(ShopUserEditForm):
@@ -48,7 +45,8 @@ class CategoryCreationForm(ModelForm):
         super(CategoryCreationForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs["class"] = "form_field"
+        self.fields['discount'].widget.attrs["step"] = 5
 
     class Meta:
         model = Category
-        fields = ("title", "description")
+        fields = ("title", "description", "discount")
